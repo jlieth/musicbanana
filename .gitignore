@@ -63,4 +63,4 @@
 ###< symfony/framework-bundle ###
 
 # environment files for docker
-docker/*.env
+docker/env-files/*.env

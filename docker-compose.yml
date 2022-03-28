@@ -1,0 +1,37 @@
+networks:
+    db:
+
+volumes:
+    postgres-data: {}
+
+services:
+    database:
+        image: postgres:13-alpine
+        networks:
+            - db
+        env_file: docker/env-files/postgres.env
+        volumes:
+            - type: volume
+              source: postgres-data
+              target: /var/lib/postgresql/data
+        restart: unless-stopped
+
+    musicbanana:
+        build:
+            context: docker/build-context
+            args:
+                CONTAINER_TIMEZONE: Europe/Berlin
+        networks:
+            - db
+        ports:
+            - 8080:8080
+        env_file:
+            - docker/env-files/postgres.env
+            - docker/env-files/symfony.env
+        volumes:
+            - type: bind
+              source: ./app
+              target: /var/www/html
+        depends_on:
+            - database
+        restart: unless-stopped
