@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>{% block title %}musicbanana{% endblock %}</title>
+        <link rel="stylesheet" href="/vendor/bootstrap-4.5.2.min.css">
+        <link rel="stylesheet" href="/css/basic.css">
+        <link rel="stylesheet" href="/css/enhanced.css" media="screen and (min-width: 768px)">
+        {% block css %}{% endblock %}
+        <script src="/vendor/jquery-3.5.1.slim.min.js"></script>
+        <script src="/vendor/popper-1.16.1.min.js"></script>
+        <script src="/vendor/bootstrap-4.5.2.min.js"></script>
+        <script src="/vendor/moment.min.js"></script>
+        <script src="/js/onload.js"></script>
+        {% block scripts %}{% endblock %}
+    </head>
+    <body class="{% block body_class %}{% endblock %}">
+        <header class="primary">
+            <span class="logo">music<span class="contrast">banana</span></span>
+
+            <span class="spacer" style="flex-grow: 1"></span>
+
+            <input type="checkbox" id="search-toggle" role="button">
+            <label for="search-toggle" id="search-toggle-label"></label>
+
+            <input type="checkbox" id="nav-toggle" role="button">
+            <label for="nav-toggle" id="nav-toggle-label"></label>
+
+            <form action="/search" method="get" class="search">
+                <input type="search" id="search-input" placeholder="Search" name="q">
+                <button type="submit" id="search-button"></button>
+            </form>
+
+            <nav>
+                <ul id="menu">
+                    <li class="home"><a href="/">Home</a></li>
+                    <li class="music"><a href="/music/">Music</a></li>
+
+                    {% if app.user %}
+                    {% set username = app.user.getName() %}
+                    <li class="user drop">
+                        <a class="dropdown-toggle text-truncate" href="/user/{{ username|e('url') }}">
+                            <strong>{{ username }}</strong>
+                        </a>
+                        <div class="dropmenu">
+                            <a href="/user/{{ username|e('url') }}">Overview</a>
+                            <a href="{# url 'frontend:user-profiles' user.username #}">Profiles</a>
+                            <a href="/settings">Settings</a>
+                            <a href="{{ path("app_logout") }}">Logout</a>
+                        </div>
+                    </li>
+
+                    {% else %}
+                    <li class="join"><a href="{{ path("app_register") }}">Join</a></li>
+                    <li class="login"><a href="{{ path("app_login") }}">Login</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            {% block main %}
+
+                <nav>
+                    <ul>
+                    {% block navitems %}
+                    {% endblock %}
+                    </ul>
+                </nav>
+
+                <div>
+                {% block content %}
+                {% endblock %}
+                </div>
+
+            {% endblock %}
+        </main>
+
+
+        {% block footer %}
+        <footer>
+            <pre class="banana">
+
+   _
+  //\
+  V  \   <span>page loaded in <strong>{# load_time #} ms</strong></span>
+   \  \_    <span>executed <strong>{# query_count #}</strong> database queries in <strong>{# query_time #} ms</strong></span>
+    \,'.`-.    <span>alive for <strong>{# alive #}</strong></span>
+     |\ `. `.
+     ( \  `. `-.                        _,.-:\
+      \ \   `.  `-._             __..--' ,-';/
+       \ `.   `-.   `-..___..---'   _.--' ,'/
+        `. `.    `-._        __..--'    ,' /
+          `. `-_     ``--..''       _.-' ,'
+            `-_ `-.___        __,--'   ,'
+               `-.__  `----"""    __.-'
+                    `--..____..--'
+
+            </pre>
+
+            {#}
+            <!--<pre class="queries">
+                <span><strong>Queries:</strong></span>
+                {% for query in queries %}
+        [{{ loop.index }}]
+                        <span>SQL:</span> {{ query.sql|raw }}
+                        <span>Params:</span> {{ query.params }}
+                        <span>Types:</span> {{ query.types }}
+                        <span>Time:</span> {{ query.time }} ms
+                {% endfor %}
+            </pre>-->
+            {/#}
+        </footer>
+        {% endblock %}
+    </body>
+</html>

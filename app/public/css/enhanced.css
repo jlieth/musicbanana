@@ -1,0 +1,114 @@
+:root {
+    --header-height: 60px;
+    --max-body-width: 1280px;
+}
+
+/**********
+ * header *
+ **********/
+header.primary nav {
+    padding-right: 1em;
+}
+
+/* navigation */
+header.primary nav {
+    width: auto;
+}
+
+header.primary nav li {
+    float: left;
+}
+
+header.primary nav li > a {
+    border: none;
+}
+
+header.primary nav li > a:focus,
+header.primary nav li > a:hover {
+    background: transparent;
+}
+
+header.primary .search {
+    order: 99;
+}
+
+/* nav toggle */
+header.primary #nav-toggle-label {
+    display: none;
+}
+
+header.primary #nav-toggle:not(:checked) ~ nav {
+    display: block;
+}
+
+/* dropdown */
+header.primary .drop .dropmenu {
+    display: none;
+    position: absolute;
+    min-width: 100%;
+    right: 0;
+    border: 1px solid #090909;
+    border-top: none;
+}
+
+header.primary .drop .dropmenu a {
+    padding: 0 1.5em;
+}
+
+header.primary .drop:focus .dropmenu,
+header.primary .drop:hover .dropmenu {
+    display: block;
+}
+
+
+/********
+ * MAIN *
+ ********/
+main {
+    max-width: var(--max-body-width);
+    margin: 2rem auto;
+}
+
+/* barChart */
+table.barChart td.content div.line {
+    flex-direction: row;
+}
+
+table.barChart td.content div.line div.artist_title_info {
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+
+table.barChart td.content div.line span.count {
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+table.barChart td.content div.line span.artist,
+table.barChart td.content div.line span.separator,
+table.barChart td.content div.line span.title {
+    display: inline-block;
+}
+
+/* recentList */
+table.recentList td {
+    display: flex;
+}
+
+table.recentList td div.artist_track_info {
+    display: inline-block;
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+
+table.recentList td span.artist,
+table.recentList td span.separator,
+table.recentList td span.title {
+    display: inline;
+}
+
+table.recentList td span.timestamp {
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
