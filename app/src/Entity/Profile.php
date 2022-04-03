@@ -33,7 +33,7 @@ class Profile
     #[ORM\Column(type: "datetimetz")]
     private $created;
 
-    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: Listen::class)]
+    #[ORM\OneToMany(mappedBy: "profile", targetEntity: Listen::class)]
     private $listens;
 
     public function __construct()
