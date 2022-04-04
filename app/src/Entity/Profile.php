@@ -11,12 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProfileRepository::class)]
-#[ORM\UniqueConstraint(name: "user_profilename_unique", columns: ["name", "usr"])]
-#[UniqueEntity(fields: ["usr", "name"], message: "This user already has a profile with this name")]
+#[ORM\UniqueConstraint(name: "user_profilename_unique", columns: ["name", "user_id"])]
+#[UniqueEntity(fields: ["user_id", "name"], message: "This user already has a profile with this name")]
 class Profile
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     #[ORM\Column(type: "integer")]
     private $id;
 
@@ -24,7 +24,7 @@ class Profile
     private $name;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "profiles")]
-    #[ORM\JoinColumn(name: "usr", nullable: false, onDelete: "CASCADE")]
+    #[ORM\JoinColumn(name: "user_id", nullable: false, onDelete: "CASCADE")]
     private $user;
 
     #[ORM\Column(type: "boolean")]

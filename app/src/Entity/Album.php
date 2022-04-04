@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Album
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     #[ORM\Column(type: "integer")]
     private $id;
 
@@ -36,6 +36,10 @@ class Album
     {
         $this->tracks = new ArrayCollection();
         $this->listens = new ArrayCollection();
+    }
+
+    public function __toString(): string {
+        return "Album(title={$this->title}, artist={$this->artist})";
     }
 
     public function getId(): ?int
