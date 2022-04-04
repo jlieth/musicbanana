@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Artist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,9 +15,33 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ArtistRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, Connection $connection)
     {
+        $this->conn = $connection;
         parent::__construct($registry, Artist::class);
+    }
+
+    public function getOrCreate(string $name, ?array $defaults): Artist {
+        $lookup = ["name" => $name];
+        $artist = $this->findOneBy($lookup);
+
+        if (!$artist) {
+            $parameters = [
+                "name" => $name,
+                "mbid" => $defaults["mbid"] ?? ""
+            ];
+
+            $this->conn->createQueryBuilder()
+                ->insert("Artist")
+                ->setValue("name", ":name")
+                ->setValue("mbid", ":mbid")
+                ->setParameters($parameters)
+                ->execute();
+
+            $artist = $this->findOneBy($lookup);
+        }
+
+        return $artist;
     }
 
     // /**
