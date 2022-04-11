@@ -64,3 +64,6 @@
 
 # environment files for docker
 docker/env-files/*.env
+
+# dataset db
+app/src/DataFixtures/lastfm-dataset-*.db
