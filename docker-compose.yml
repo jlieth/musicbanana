@@ -28,6 +28,8 @@ services:
         env_file:
             - docker/env-files/postgres.env
             - docker/env-files/symfony.env
+        environment:
+            - MEMPROF_PROFILE=dump_on_limit
         volumes:
             - type: bind
               source: ./app

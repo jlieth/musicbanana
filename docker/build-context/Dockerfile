@@ -13,6 +13,9 @@ RUN apk --no-cache add alpine-conf~=3 \
     && setup-timezone -z $TZ \
     && apk del alpine-conf
 
+# adding testing repository
+RUN echo https://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && apk update
+
 # install postgres extensions
 # hadolint ignore=DL3018
 RUN apk --no-cache add \
@@ -25,7 +28,9 @@ RUN apk --no-cache add \
     php8-pdo_pgsql \
     php8-pecl-apcu \
     php8-simplexml \
+    php8-sqlite3 \
     php8-tokenizer \
+    php8-pecl-memprof \
     && apk del php8-mysqli
 
 # Override nginx config
