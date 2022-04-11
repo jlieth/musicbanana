@@ -21,7 +21,7 @@ class AlbumRepository extends ServiceEntityRepository
         parent::__construct($registry, Album::class);
     }
 
-    public function getOrCreate(string $title, Artist $artist, ?array $defaults): Album {
+    public function getOrCreate(string $title, Artist $artist, ?array $defaults = null): Album {
         $lookup = ["title" => $title, "artist" => $artist];
         $album = $this->findOneBy($lookup);
 

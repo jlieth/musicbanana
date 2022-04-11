@@ -25,7 +25,7 @@ class ProfileRepository extends ServiceEntityRepository
         parent::__construct($registry, Profile::class);
     }
 
-    public function getOrCreate(string $name, User $user, ?array $defaults): Profile {
+    public function getOrCreate(string $name, User $user, ?array $defaults = null): Profile {
         $lookup = ["name" => $name, "user" => $user];
         $profile = $this->findOneBy($lookup);
 

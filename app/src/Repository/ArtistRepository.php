@@ -21,7 +21,7 @@ class ArtistRepository extends ServiceEntityRepository
         parent::__construct($registry, Artist::class);
     }
 
-    public function getOrCreate(string $name, ?array $defaults): Artist {
+    public function getOrCreate(string $name, ?array $defaults = null): Artist {
         $lookup = ["name" => $name];
         $artist = $this->findOneBy($lookup);
 

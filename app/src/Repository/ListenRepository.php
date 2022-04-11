@@ -22,7 +22,7 @@ class ListenRepository extends ServiceEntityRepository
         parent::__construct($registry, Listen::class);
     }
 
-    public function getOrCreate(Profile $profile, DateTimeInterface $date, ?array $defaults) {
+    public function getOrCreate(Profile $profile, DateTimeInterface $date, ?array $defaults = null) {
         $lookup = ["profile" => $profile, "date" => $date];
         $listen = $this->findOneBy($lookup);
 
