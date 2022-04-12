@@ -21,6 +21,7 @@ RUN echo https://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/reposito
 RUN apk --no-cache add \
     build-base \
     git \
+    npm \
     php8-bcmath \
     php8-dev \
     php8-gmp \
