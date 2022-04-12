@@ -38,4 +38,8 @@ RUN apk --no-cache add \
 COPY nginx.conf /etc/nginx/nginx.conf
 RUN chmod 644 /etc/nginx/nginx.conf
 
+# Override supervisord config
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN chmod 644 /etc/supervisor/conf.d/supervisord.conf
+
 USER nobody
