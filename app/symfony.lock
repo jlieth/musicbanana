@@ -177,6 +177,9 @@
     "psr/log": {
         "version": "3.0.0"
     },
+    "rompetomp/inertia-bundle": {
+        "version": "v2.2.0"
+    },
     "sebastian/cli-parser": {
         "version": "1.0.1"
     },
@@ -236,6 +239,9 @@
         "files": [
             "config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "symfony/asset": {
+        "version": "6.1.x-dev"
     },
     "symfony/browser-kit": {
         "version": "6.1.x-dev"
@@ -535,6 +541,25 @@
             "config/packages/dev/web_profiler.yaml",
             "config/packages/test/web_profiler.yaml",
             "config/routes/dev/web_profiler.yaml"
+        ]
+    },
+    "symfony/webpack-encore-bundle": {
+        "version": "1.14",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.10",
+            "ref": "2858aeed7e1d81a45365c049eb533cc8827e380b"
+        },
+        "files": [
+            "assets/app.js",
+            "assets/bootstrap.js",
+            "assets/controllers.json",
+            "assets/controllers/hello_controller.js",
+            "assets/styles/app.css",
+            "config/packages/webpack_encore.yaml",
+            "package.json",
+            "webpack.config.js"
         ]
     },
     "symfony/yaml": {
