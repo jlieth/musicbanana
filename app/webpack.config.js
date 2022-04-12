@@ -1,5 +1,6 @@
 const Encore = require('@symfony/webpack-encore');
 const path = require('path')
+const sveltePreprocess = require('svelte-preprocess');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -18,11 +19,12 @@ Encore
     .addLoader({
         test: /\.(svelte)$/,
         use: {
-        loader: 'svelte-loader',
-        options: {
-            emitCss: true,
-            hotReload: true,
-        },
+            loader: 'svelte-loader',
+            options: {
+                emitCss: true,
+                hotReload: true,
+                preprocess: sveltePreprocess({})
+            },
         },
     })
 
@@ -75,6 +77,7 @@ Encore
 
     // uncomment if you use TypeScript
     .enableTypeScriptLoader()
+    .enableForkedTypeScriptTypesChecking()
 
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher

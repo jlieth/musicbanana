@@ -1,10 +1,11 @@
-import App from "./App.svelte";
+import { createInertiaApp } from '@inertiajs/inertia-svelte'
+import { InertiaProgress } from "@inertiajs/progress"
 
-const app = new App({
-	target: document.body,
-	props: {
-		name: "world"
-	}
-});
+InertiaProgress.init()
 
-export default app;
+createInertiaApp({
+	resolve: (name: String) => require(`./Pages/${name}.svelte`),
+	setup({ el, App, props }) {
+		new App({ target: el, props })
+  	},
+})

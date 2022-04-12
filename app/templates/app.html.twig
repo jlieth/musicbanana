@@ -1,16 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>musicbanana</title>
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+
     {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
+        <link rel="stylesheet" href="/vendor/bootstrap.min.css">
+        {{ encore_entry_link_tags("app") }}
     {% endblock %}
+
+    <script src="/vendor/jquery-3.6.0.min.js"></script>
+    <script src="/vendor/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/moment.min.js"></script>
 </head>
 <body>
-{{ inertia(page) }}
-{% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
-{% endblock %}
+    {{ inertia(page) }}
+    {% block javascripts %}
+        {{ encore_entry_script_tags("app") }}
+    {% endblock %}
 </body>
 </html>
