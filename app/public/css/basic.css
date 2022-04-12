@@ -2,7 +2,7 @@
     --header-height: 45px;
     --highlight-color: #ffc107;
     --highlight-color: #789abc;
-    --highlight-color: var(--cyan);
+    --highlight-color: var(--bs-cyan);
 }
 
 body {
@@ -385,4 +385,3 @@ footer pre.queries {
 	background: #000;
 	border-top: 1px solid var(--highlight-color);
 }
-
