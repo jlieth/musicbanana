@@ -19,11 +19,19 @@ Encore
     .addLoader({
         test: /\.(svelte)$/,
         use: {
-            loader: 'svelte-loader',
+            loader: "svelte-loader",
             options: {
                 emitCss: true,
                 hotReload: true,
-                preprocess: sveltePreprocess({})
+                preprocess: sveltePreprocess({
+                    sourceMap: !Encore.isProduction(),
+                    postcss: {
+                        plugins: [
+                            require("tailwindcss"),
+                            require("autoprefixer"),
+                        ],
+                    },
+                }),
             },
         },
     })
@@ -85,11 +93,11 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
-;
+    ;
 
 const config = Encore.getWebpackConfig()
 config.resolve.mainFields = ['svelte', 'browser', 'module', 'main']
-config.resolve.extensions =  ['.wasm', '.mjs', '.js', '.json', '.jsx', '.vue', '.ts', '.tsx', '.svelte']
+config.resolve.extensions = ['.wasm', '.mjs', '.js', '.json', '.jsx', '.vue', '.ts', '.tsx', '.svelte']
 
 let svelte = config.module.rules.pop();
 config.module.rules.unshift(svelte);
