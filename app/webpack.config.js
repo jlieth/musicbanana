@@ -25,12 +25,7 @@ Encore
                 hotReload: true,
                 preprocess: sveltePreprocess({
                     sourceMap: !Encore.isProduction(),
-                    postcss: {
-                        plugins: [
-                            require("tailwindcss"),
-                            require("autoprefixer"),
-                        ],
-                    },
+                    postcss: true,
                 }),
             },
         },

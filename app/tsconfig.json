@@ -6,7 +6,10 @@
   "compilerOptions": {
     "module": "esNext",
     "target": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": ["./assets/js/*"]
+    }
   },
   "strict": true,
   "noImplicitAny": false
