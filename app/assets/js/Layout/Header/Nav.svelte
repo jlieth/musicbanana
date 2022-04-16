@@ -1,5 +1,9 @@
 <script lang="ts">
+    const routes = require("@/routes.json")
+    import Routing from "@public/bundles/fosjsrouting/js/router.min.js"
     import Button from "@/Layout/Header/Button.svelte"
+
+    Routing.setRoutingData(routes);
 
     export let open = false
 </script>
@@ -9,7 +13,7 @@
         <a href="/">Button</a>
     </Button>
     <Button class="ml-2 md:ml-0">
-        <a href="/">Link</a>
+        <a href="{Routing.generate("app_login", true)}">Login</a>
     </Button>
 </nav>
 

@@ -32,7 +32,8 @@ Encore
     })
 
     .addAliases({
-        '@': path.resolve('assets/js')
+        "@": path.resolve("assets/js"),
+        "@public": path.resolve("public"),
     })
 
     /*

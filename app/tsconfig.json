@@ -8,7 +8,8 @@
     "target": "esnext",
     "moduleResolution": "node",
     "paths": {
-      "@/*": ["./assets/js/*"]
+      "@/*": ["./assets/js/*"],
+      "@public/*": ["./public/*"],
     }
   },
   "strict": true,
