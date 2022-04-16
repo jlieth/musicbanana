@@ -3,6 +3,7 @@
         "bradlc.vscode-tailwindcss",
         "svelte.svelte-vscode",
         "ardenivanov.svelte-intellisense",
-        "csstools.postcss"
+        "csstools.postcss",
+        "mblode.twig-language-2"
     ]
 }
