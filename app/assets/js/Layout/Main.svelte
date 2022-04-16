@@ -1,42 +1,28 @@
 <script lang="ts">
-    import Header from "@/Layout/Header.svelte"
+    import Header from "@/Layout/Header/Header.svelte"
+
+    let count: number = 0;
+
+    function incrementCount() {
+        count++;
+    }
 </script>
 
-<div id="wrapper" class="container-lg">
+<div id="wrapper" class="max-w-xxl mx-auto bg-gray-100">
     <Header />
+
+    <h1>Symfony + Svelte = &lt;3</h1>
+
+    <button class="bg-amber-600" on:click={incrementCount}>
+        Clicked {count}
+        {count === 1 ? "time" : "times"}
+    </button>
 
 </div>
 
-<style lang="postcss" global>
-    :root {
-        --highlight-color: #ffc107;
-        --highlight-color: #789abc;
-        --highlight-color: var(--bs-cyan);
+<style>
+    h1 {
+        text-align: center;
+        color: #d26d26;
     }
-
-    body {
-        background: #e3e3e3;
-    }
-
-    a, a:focus, a:hover {
-        text-decoration: none;
-    }
-
-    a {
-        color: #333;
-    }
-
-    a:focus, a:hover {
-        color: var(--highlight-color);
-    }
-
-    #wrapper {
-        padding-right: 0;
-        padding-left: 0;
-        border: 1px solid red;
-    }
-
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
 </style>

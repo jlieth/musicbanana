@@ -1,9 +1,30 @@
-const Encore = require("@symfony/webpack-encore");
+const colors = require("tailwindcss/colors");
 
 module.exports = {
-    content: ["./assets/js/**/*.svelte"],
+    content: [`${__dirname}/assets/js/**/*.svelte`],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                "header": colors.zinc,
+                "highlight": colors.cyan,
+            },
+        },
+        screens: {
+            "xxl": {max: "9999px"},
+            "xl": {max: "1400px"},
+            "lg": {max: "1200px"},
+            "md": {max: "992px"},
+            "sm": {max: "768px"},
+            "xs": {max: "576px"},
+        },
+        maxWidth: {
+            "xs": "480px",
+            "sm": "540px",
+            "md": "720px",
+            "lg": "960px",
+            "xl": "1140px",
+            "xxl": "1320px",
+        },
     },
     plugins: []
 }
