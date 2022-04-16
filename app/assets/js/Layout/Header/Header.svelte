@@ -3,6 +3,7 @@
     import { faSearch } from "@fortawesome/free-solid-svg-icons"
     import Button from "@/Layout/Header/Button.svelte"
     import Hamburger from "@/Layout/Header/Hamburger.svelte"
+    import Logo from "@/Layout/Header/Logo.svelte"
     import SearchBar from "@/Layout/Header/SearchBar.svelte"
 
     let isNavOpen = false
@@ -10,17 +11,12 @@
 </script>
 
 <header>
-    <div class="w-full flex flex-row items-center justify-between px-3 md:py-3">
+    <div>
         <!-- Hamburger button -->
-        <Button class="!hidden md:!inline">
-            <Hamburger bind:open={isNavOpen} />
-        </Button>
+        <Hamburger bind:open={isNavOpen} />
 
         <!-- musicbanana text -->
-        <span class="text-center flex flex-row text-4xl text-header-100">
-            music
-            <span class="text-highlight-500">banana</span>
-        </span>
+        <Logo />
 
         <!--search bar toggle button -->
         <Button class="text-lg">
@@ -49,6 +45,10 @@
         @apply w-full h-20 flex flex-row bg-header-900;
     }
 
+    header > div {
+        @apply w-full flex flex-row items-center justify-between px-3;
+    }
+
     nav {
         @apply flex flex-row items-center pr-3;
     }
@@ -56,6 +56,10 @@
     @media screen(md) {
         header {
             @apply h-fit flex-col items-stretch;
+        }
+
+        header > div {
+            @apply py-3;
         }
 
         nav {
