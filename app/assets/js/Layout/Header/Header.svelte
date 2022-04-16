@@ -4,6 +4,7 @@
     import Button from "@/Layout/Header/Button.svelte"
     import Hamburger from "@/Layout/Header/Hamburger.svelte"
     import Logo from "@/Layout/Header/Logo.svelte"
+    import Nav from "@/Layout/Header/Nav.svelte"
     import SearchBar from "@/Layout/Header/SearchBar.svelte"
 
     let isNavOpen = false
@@ -28,14 +29,7 @@
     </div>
 
     <!-- main site navigation -->
-    <nav class:hide={!isNavOpen}>
-        <Button class="ml-2 md:ml-0">
-            <a href="/">Button</a>
-        </Button>
-        <Button class="ml-2 md:ml-0">
-            <a href="/">Link</a>
-        </Button>
-    </nav>
+    <Nav bind:open={isNavOpen} />
 </header>
 
 <SearchBar bind:hidden={isSearchHidden} />
@@ -49,10 +43,6 @@
         @apply w-full flex flex-row items-center justify-between px-3;
     }
 
-    nav {
-        @apply flex flex-row items-center pr-3;
-    }
-
     @media screen(md) {
         header {
             @apply h-fit flex-col items-stretch;
@@ -60,14 +50,6 @@
 
         header > div {
             @apply py-3;
-        }
-
-        nav {
-            @apply w-full flex-col items-stretch pr-0;
-        }
-
-        nav.hide {
-            @apply hidden;
         }
     }
 </style>
