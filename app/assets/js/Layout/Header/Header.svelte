@@ -32,7 +32,7 @@
     <Nav bind:open={isNavOpen} />
 </header>
 
-<SearchBar bind:hidden={isSearchHidden} />
+<SearchBar bind:hide={isSearchHidden} />
 
 <style lang="postcss">
     header {
