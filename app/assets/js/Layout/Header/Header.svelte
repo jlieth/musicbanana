@@ -36,7 +36,7 @@
 
 <style lang="postcss">
     header {
-        @apply w-full h-20 flex flex-row bg-header-900;
+        @apply w-full h-20 flex flex-row rounded-t-md bg-header-900;
     }
 
     header > div {
@@ -45,7 +45,7 @@
 
     @media screen(md) {
         header {
-            @apply h-fit flex-col items-stretch;
+            @apply h-fit flex-col items-stretch rounded-t-none;
         }
 
         header > div {
