@@ -9,7 +9,7 @@
     Routing.setRoutingData(routes)
     let urls = {
         "index": Routing.generate("index", true),
-        "login": Routing.generate("app_login", true),
+        "login": Routing.generate("login", true),
     }
 
 </script>

@@ -7,7 +7,6 @@
     createInertiaApp({
         resolve: (name: String) => require(`./Pages/${name}.svelte`),
         setup({ el, App, props }) {
-		    console.log(props)
             new App({ target: el, props })
         },
     })

@@ -3,28 +3,24 @@
 namespace App\Controller;
 
 use LogicException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController extends AbstractController
+class SecurityController extends BaseController
 {
-    #[Route("/login", name: "app_login", options: ["expose" => true])]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    #[Route("/login", name: "login", methods: ["GET"], options: ["expose" => true])]
+    #[Route("/login", name: "login_attempt", methods: ["POST"], options: ["expose" => true])]
+    public function login(Request $request): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute("target_path");
-        // }
+        $user = $this->getUser();
 
-        $context = [
-            // get the login error if there is one
-            "error" => $authenticationUtils->getLastAuthenticationError(),
-            // last username entered by the user
-            "last_username" => $authenticationUtils->getLastUsername(),
-        ];
+        // redirect after successful login attempt
+        if ($request->getMethod() === "POST" && $user !== null) {
+            return $this->redirectToRoute("index");
+        }
 
-        return $this->render("login.html.twig", $context);
+        return $this->renderWithInertia("Login");
     }
 
     #[Route("/logout", name: "app_logout")]

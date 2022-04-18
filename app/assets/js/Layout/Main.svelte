@@ -1,5 +1,8 @@
 <script lang="ts">
+    import { page } from "@inertiajs/inertia-svelte"
     import Header from "@/Layout/Header/Header.svelte"
+
+    console.log($page.props)
 
     let count: number = 0;
 
@@ -11,8 +14,8 @@
 <div id="wrapper">
     <Header />
 
-    <main class="w-full flex items-center justify-center text-header-800">
-        <slot>
+    <main class="w-full flex items-stretch justify-center text-header-800">
+        <slot name="content">
             <h1>Symfony + Svelte = &lt;3</h1>
 
             <button class="bg-amber-600" on:click={incrementCount}>
