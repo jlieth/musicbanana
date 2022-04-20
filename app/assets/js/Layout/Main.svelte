@@ -2,7 +2,7 @@
     import { page } from "@inertiajs/inertia-svelte"
     import Header from "@/Layout/Header/Header.svelte"
 
-    console.log($page.props)
+    $: console.log($page.props)
 
     let count: number = 0;
 

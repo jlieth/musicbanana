@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use RuntimeException;
-use App\Controller\Traits\BuildInertiaDefaultPropsTrait;
+use App\Controller\Traits\DefaultProps;
 use App\Entity\User;
 use Rompetomp\InertiaBundle\Service\InertiaInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class BaseController extends AbstractController
 {
-    use BuildInertiaDefaultPropsTrait;
+    use DefaultProps;
 
     protected InertiaInterface $inertia;
 

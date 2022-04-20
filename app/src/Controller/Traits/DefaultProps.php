@@ -11,7 +11,7 @@ use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-trait BuildInertiaDefaultPropsTrait
+trait DefaultProps
 {
     /**
      * @return array<string, mixed>
@@ -21,37 +21,36 @@ trait BuildInertiaDefaultPropsTrait
         $flashSuccessMessage = null;
         $flashErrorMessage = null;
 
+        $props = [];
+        $props["user"] = null;
+
+        if ($user !== null) {
+            $props["user"] = [
+                "id" => $user->getId(),
+                "name" => $user->getName()
+            ];
+        }
+
         // @phpstan-ignore-next-line
         if ($request->hasSession()) {
             /** @var Session $session */
             $session = $request->getSession();
 
-            if ($session->getFlashBag()->has('success')) {
-                $flashSuccessMessages = $session->getFlashBag()->get('success');
+            if ($session->getFlashBag()->has("success")) {
+                $flashSuccessMessages = $session->getFlashBag()->get("success");
                 $flashSuccessMessage = reset($flashSuccessMessages);
             }
 
-            if ($session->getFlashBag()->has('success')) {
-                $flashErrorMessages = $session->getFlashBag()->get('error');
+            if ($session->getFlashBag()->has("error")) {
+                $flashErrorMessages = $session->getFlashBag()->get("error");
                 $flashErrorMessage = reset($flashErrorMessages);
             }
         }
-
-        return [
-            'errors' => new ArrayObject(),
-            'auth' => [
-                'user' => $user !== null
-                    ? [
-                        'id' => $user->getId(),
-                        'email' => $user->getEmail(),
-                        'role' => null // TODO: not sure what the vue app expects here yet...
-                    ]
-                    : null
-            ],
-            'flash' => [
-                'success' => $flashSuccessMessage,
-                'error' => $flashErrorMessage
-            ]
+        $props["flash"] = [
+            "success" => $flashSuccessMessage,
+            "error" => $flashErrorMessage
         ];
+
+        return $props;
     }
 }

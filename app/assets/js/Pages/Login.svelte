@@ -6,6 +6,9 @@
     import Routing from "@public/bundles/fosjsrouting/js/router.min.js"
     import Main from "@/Layout/Main.svelte"
 
+    export let flash: {error: String, success: String}
+    $: console.log(flash)
+
     Routing.setRoutingData(routes)
     let url = Routing.generate("login_attempt", true)
 
@@ -15,13 +18,15 @@
     })
 
     function submit() {
-        //let options = { forceFormData: true }
         $form.post(url)
     }
 </script>
 
 <Main>
     <div slot="content" class="content">
+        {#if flash.error}
+        <div>{flash.error}</div>
+        {/if}
         <h2>Login</h2>
         <form on:submit|preventDefault={submit}>
             <div>
