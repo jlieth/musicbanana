@@ -7,6 +7,8 @@
         "@types/tailwindcss": "^3.0.10",
         "autoprefixer": "^10.4.4",
         "core-js": "^3.0.0",
+        "flowbite": "^1.4.2",
+        "flowbite-svelte": "^0.14.13",
         "fork-ts-checker-webpack-plugin": "^6.5.1",
         "postcss": "^8.4.12",
         "regenerator-runtime": "^0.13.2",

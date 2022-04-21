@@ -2,6 +2,7 @@
 
 <script lang="ts">
     const routes = require("@/routes.json")
+    import { BorderAlert } from "flowbite-svelte";
     import { useForm } from "@inertiajs/inertia-svelte"
     import Routing from "@public/bundles/fosjsrouting/js/router.min.js"
     import Main from "@/Layout/Main.svelte"
@@ -25,7 +26,9 @@
 <Main>
     <div slot="content" class="content">
         {#if flash.error}
-        <div>{flash.error}</div>
+        <BorderAlert alertId="border-alert-2" color="red" closeBtn>
+            {flash.error}
+        </BorderAlert>
         {/if}
         <h2>Login</h2>
         <form on:submit|preventDefault={submit}>

@@ -1,8 +1,8 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
 
-  "include": ["assets/js/**/*"],
-  "exclude": ["./node_modules/*", "__sapper__/*", "public/*"],
+  "include": ["./assets/js/**/*"],
+  "exclude": ["./node_modules/*", "public/*"],
   "compilerOptions": {
     "module": "esNext",
     "target": "esnext",

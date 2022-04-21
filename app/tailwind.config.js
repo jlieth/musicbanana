@@ -1,7 +1,10 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-    content: [`${__dirname}/assets/js/**/*.svelte`],
+    content: [
+        `${__dirname}/assets/js/**/*.svelte`,
+        `${__dirname}/node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}`,
+    ],
     theme: {
         extend: {
             colors: {
@@ -26,5 +29,7 @@ module.exports = {
             "xxl": "1320px",
         },
     },
-    plugins: []
+    plugins: [
+        require("flowbite/plugin")
+    ]
 }
