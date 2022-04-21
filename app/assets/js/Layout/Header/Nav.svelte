@@ -1,15 +1,13 @@
 <script lang="ts">
-    const routes = require("@/routes.json")
     import { inertia } from "@inertiajs/inertia-svelte"
-    import Routing from "@public/bundles/fosjsrouting/js/router.min.js"
+    import router from "@/router"
     import Button from "@/Layout/Header/Button.svelte"
 
     export let open = false
 
-    Routing.setRoutingData(routes)
     let urls = {
-        "index": Routing.generate("index", true),
-        "login": Routing.generate("login", true),
+        "index": router.generate("index", true),
+        "login": router.generate("login", true),
     }
 
 </script>

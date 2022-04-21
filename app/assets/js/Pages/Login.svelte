@@ -1,18 +1,13 @@
 <!-- based on https://tailwindcomponents.com/component/simple-login-screen -->
 
 <script lang="ts">
-    const routes = require("@/routes.json")
     import { BorderAlert } from "flowbite-svelte";
     import { useForm } from "@inertiajs/inertia-svelte"
-    import Routing from "@public/bundles/fosjsrouting/js/router.min.js"
+    import router from "@/router"
     import Main from "@/Layout/Main.svelte"
 
     export let flash: {error: String, success: String}
-    $: console.log(flash)
-
-    Routing.setRoutingData(routes)
-    let url = Routing.generate("login_attempt", true)
-
+    let url = router.generate("login_attempt", true)
     let form = useForm({
         name: null,
         password: null,
