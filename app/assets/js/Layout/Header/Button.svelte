@@ -20,7 +20,7 @@
     }
 
     .btn > :global(*) {
-        @apply px-3 py-2;
+        @apply w-full px-3 py-2;
         @apply text-gray-200;
     }
 

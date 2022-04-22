@@ -11,9 +11,8 @@
     }
 </script>
 
+<Header />
 <div id="wrapper">
-    <Header />
-
     <main class="w-full flex items-stretch justify-center text-header-800">
         <slot name="content">
             <h1>Symfony + Svelte = &lt;3</h1>
@@ -29,9 +28,9 @@
 
 <style>
     #wrapper {
-        @apply max-w-xxl mx-auto my-2 bg-gray-100 rounded-md;
+        @apply max-w-xxl mx-auto my-2 bg-gray-100;
         @apply border border-gray-500 border-opacity-50;
-        @apply md:my-0 md:rounded-none md:border-0;
+        @apply md:my-0 md:border-0;
     }
 
     h1 {
