@@ -31,7 +31,7 @@
     }
 
     a {
-        @apply h-full flex items-center w-full p-3 text-gray-200;
+        @apply h-full flex items-center md:w-full p-3 text-gray-200;
         @apply border-b-4 border-transparent md:border-b-0 md:border-l-4;
         @apply transition;
     }
