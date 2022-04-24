@@ -2,11 +2,9 @@
   "extends": "@tsconfig/svelte/tsconfig.json",
 
   "include": ["./assets/js/**/*"],
-  "exclude": ["./node_modules/*", "public/*"],
+  "exclude": ["./node_modules/*", "./public/*"],
   "compilerOptions": {
-    "module": "esNext",
-    "target": "esnext",
-    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "paths": {
       "@/*": ["./assets/js/*"],
       "@public/*": ["./public/*"],
