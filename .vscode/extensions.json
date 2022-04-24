@@ -4,6 +4,7 @@
         "svelte.svelte-vscode",
         "ardenivanov.svelte-intellisense",
         "csstools.postcss",
-        "mblode.twig-language-2"
+        "mblode.twig-language-2",
+        "bmewburn.vscode-intelephense-client"
     ]
 }
