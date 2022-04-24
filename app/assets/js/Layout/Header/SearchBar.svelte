@@ -9,14 +9,16 @@
 
 <style lang="postcss">
     div {
-        @apply flex items-center md:order-last md:mt-3 cursor-pointer;
-        @apply text-header-100 bg-header-800 ring ring-white/20 ring-offset-[-2px];
+        @apply flex items-center md:order-last md:mt-3 rounded;
+        @apply bg-header-900 ring ring-white/20 ring-offset-[-2px];
         @apply hover:bg-header-700 hover:ring-highlight-500;
+        @apply transition;
     }
 
     input {
-        @apply flex-grow pr-2 border-0;
-        @apply bg-header-800 focus:ring-0;
+        @apply flex-grow pr-2 border-0 rounded;
+        @apply bg-header-900 focus:ring-0;
+        @apply transition;
     }
 
     div:hover input {
