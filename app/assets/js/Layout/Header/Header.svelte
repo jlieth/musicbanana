@@ -21,7 +21,7 @@
 
 <style lang="postcss">
     header {
-        @apply w-full h-20 bg-header-900;
+        @apply w-full h-20 bg-header-900 shadow-xl;
     }
 
     div {
