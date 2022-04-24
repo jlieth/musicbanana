@@ -1,18 +1,15 @@
 <script lang="ts">
-    import Fa from "svelte-fa"
-    import { faSearch } from "@fortawesome/free-solid-svg-icons"
+    import { SearchIconSolid } from "@codewithshin/svelte-heroicons"
 </script>
 
 <div>
-    <button class="m-3 text-lg">
-        <Fa icon={faSearch} />
-    </button>
+    <SearchIconSolid className="w-6 h-6 ml-2" />
     <input type="search" name="search" placeholder="Search">
 </div>
 
 <style lang="postcss">
     div {
-        @apply flex md:order-last md:mt-3 cursor-pointer;
+        @apply flex items-center md:order-last md:mt-3 cursor-pointer;
         @apply text-header-100 bg-header-800 ring ring-white/20 ring-offset-[-2px];
         @apply hover:bg-header-700 hover:ring-highlight-500;
     }
