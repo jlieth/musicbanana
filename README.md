@@ -71,3 +71,10 @@ Run manually (optional):
 ```console
 pre-commit run --all-files
 ```
+
+## Credits
+
+* The font used in the header and located under `app/public/fonts/Hi*.otf` is
+  [Hi.](https://fontlibrary.org/en/font/hi) by Mew Too & Robert Jablonski
+  of KineticPlasma Fonts/Cannot Into Space Fonts.
+  License: [SIL Open Font License (OFL)](http://scripts.sil.org/OFL)
