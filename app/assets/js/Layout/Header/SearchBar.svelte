@@ -1,8 +1,11 @@
 <script lang="ts">
     import { SearchIconSolid } from "@codewithshin/svelte-heroicons"
+
+    let class_ = ""
+    export {class_ as class}
 </script>
 
-<div>
+<div class={class_}>
     <SearchIconSolid className="w-6 h-6 ml-2" />
     <input type="search" name="search" placeholder="Search">
 </div>

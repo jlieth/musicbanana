@@ -1,10 +1,13 @@
 <script lang="ts">
-    import { inertia } from "@inertiajs/inertia-svelte"
+    import { inertia, page } from "@inertiajs/inertia-svelte"
     import router from "@/router"
+    import ImgDropdown from "@/Layout/Header/ImgDropdown.svelte"
     import SearchBar from "@/Layout/Header/SearchBar.svelte"
 
     export let open = false
     $: hide = !open
+
+    $: user = $page.props.user
 
     let urls = {
         "index": router.generate("index", true),
@@ -14,15 +17,22 @@
 </script>
 
 <nav class:hide>
-    <SearchBar />
+    <SearchBar class="mr-4 md:mr-0 md:mt-2" />
 
     <a href="{urls["index"]}" use:inertia>Home</a>
-    <a href="{urls["login"]}" use:inertia>Login</a>
+    <a href="/" use:inertia>Music</a>
+
+    {#if !user}
+        <a href="{urls["login"]}" use:inertia>Log In</a>
+        <a href="/" use:inertia>Sign Up</a>
+    {:else}
+        <ImgDropdown class="ml-4 md:ml-0" />
+    {/if}
 </nav>
 
 <style lang="postcss">
     nav {
-        @apply h-full flex flex-row items-center gap-3;
+        @apply h-full flex flex-row items-center;
         @apply md:w-full md:flex-col md:items-stretch md:gap-1.5 md:mt-3 md:pr-0;
     }
 
