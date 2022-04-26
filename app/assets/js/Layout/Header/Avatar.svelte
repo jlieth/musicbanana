@@ -8,7 +8,7 @@
     $: user = $page.props.user
 </script>
 
-<div class="relative h-full flex items-center justify-center {class_}">
+<a href="/" class="{class_}" title="Go to your profile">
     <div class="avatar">
         {#if user.avatar}
             <img src="{user.avatar}" alt="avatar">
@@ -17,17 +17,23 @@
         {/if}
     </div>
 
-    <div class="name">
-        {user.name}
-    </div>
-
-</div>
+    <div class="name">{user.name}</div>
+</a>
 
 <style lang="postcss">
+    a {
+        @apply relative md:ml-3 text-header-200;
+    }
+
     .avatar {
+        @apply w-12 h-12 md:w-10 md:h-10 rounded-full;
+        @apply flex items-center justify-center;
         @apply bg-header-700;
-        @apply w-12 h-12 flex items-center justify-center rounded-full;
-        @apply ring ring-white/20 ring-offset-[-1px];
+        @apply ring ring-header-500 ring-offset-[-1px] transition;
+    }
+
+    a:hover .avatar {
+        @apply ring-highlight-500;
     }
 
     img {
@@ -35,7 +41,7 @@
     }
 
     .name {
-        @apply max-w-[3.5rem] absolute bottom-2 md:bottom-0;
+        @apply w-12 md:w-10 text-center absolute -bottom-2;
         @apply text-sm truncate;
         text-shadow:
             -1px -1px 0 #000,

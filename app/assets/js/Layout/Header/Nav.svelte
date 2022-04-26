@@ -1,7 +1,6 @@
 <script lang="ts">
     import { inertia, page } from "@inertiajs/inertia-svelte"
     import router from "@/router"
-    import ImgDropdown from "@/Layout/Header/ImgDropdown.svelte"
     import SearchBar from "@/Layout/Header/SearchBar.svelte"
 
     export let open = false
@@ -22,18 +21,18 @@
     <a href="{urls["index"]}" use:inertia>Home</a>
     <a href="/" use:inertia>Music</a>
 
-    {#if !user}
-        <a href="{urls["login"]}" use:inertia>Log In</a>
-        <a href="/" use:inertia>Sign Up</a>
+    {#if user}
+        <a href="/" use:inertia>Log&nbsp;out</a>
     {:else}
-        <ImgDropdown class="ml-4 md:ml-0" />
+        <a href="{urls["login"]}" use:inertia>Log&nbsp;in</a>
+        <a href="/" use:inertia>Sign&nbsp;up</a>
     {/if}
 </nav>
 
 <style lang="postcss">
     nav {
         @apply h-full flex flex-row items-center;
-        @apply md:w-full md:flex-col md:items-stretch md:gap-1.5 md:mt-3 md:pr-0;
+        @apply md:w-full md:flex-col md:items-stretch md:mt-3 md:pr-0;
     }
 
     nav.hide {
@@ -43,11 +42,12 @@
     a {
         @apply h-full flex items-center md:w-full p-3 text-gray-200;
         @apply border-b-4 border-transparent md:border-b-0 md:border-l-4;
+        @apply md:border-t md:border-t-header-700;
         @apply transition;
     }
 
     a:hover {
         @apply bg-header-900;
-        @apply border-highlight-500;
+        @apply border-l-highlight-500;
     }
 </style>

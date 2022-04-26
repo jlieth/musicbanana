@@ -3,7 +3,7 @@
     export let open = false
 </script>
 
-<div class="foo" on:click={() => (open = !open)}>
+<div on:click={() => (open = !open)}>
     <svg viewBox="0 0 32 32" class:open>
         <line id="top" x1="0" y1="6" x2="32" y2="6" transform-origin="16 6" />
         <line id="middle" x1="0" y1="16" x2="32" y2="16" />
