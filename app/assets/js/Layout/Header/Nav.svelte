@@ -11,6 +11,7 @@
     let urls = {
         "index": router.generate("index", true),
         "login": router.generate("login", true),
+        "logout": router.generate("logout", true),
     }
 
 </script>
@@ -22,7 +23,7 @@
     <a href="/" use:inertia>Music</a>
 
     {#if user}
-        <a href="/" use:inertia>Log&nbsp;out</a>
+        <a href="{urls["logout"]}" use:inertia>Log&nbsp;out</a>
     {:else}
         <a href="{urls["login"]}" use:inertia>Log&nbsp;in</a>
         <a href="/" use:inertia>Sign&nbsp;up</a>

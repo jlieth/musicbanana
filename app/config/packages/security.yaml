@@ -30,7 +30,7 @@ security:
                 password_path: password
                 failure_handler: App\Security\JsonLoginFailureHandler
             logout:
-                path: app_logout
+                path: logout
                 target: index
 
             # activate different ways to authenticate
