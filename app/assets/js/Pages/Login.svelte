@@ -1,12 +1,10 @@
 <!-- based on https://tailwindcomponents.com/component/simple-login-screen -->
 
 <script lang="ts">
-    import { BorderAlert } from "flowbite-svelte";
     import { useForm } from "@inertiajs/inertia-svelte"
     import router from "@/router"
     import Main from "@/Layout/Main.svelte"
 
-    export let flash: {error: String, success: String}
     let url = router.generate("login_attempt", true)
     let form = useForm({
         name: null,
@@ -19,12 +17,8 @@
 </script>
 
 <Main>
+    <div slot="sidebar" class="hidden"></div>
     <div slot="content" class="content">
-        {#if flash.error}
-        <BorderAlert alertId="border-alert-2" color="red" closeBtn>
-            {flash.error}
-        </BorderAlert>
-        {/if}
         <h2>Login</h2>
         <form on:submit|preventDefault={submit}>
             <div>
@@ -48,13 +42,13 @@
                 Don't have an account yet?
                 <a href="/" class="underline">Register here</a>
             </div>
-      </form>
+        </form>
     </div>
 </Main>
 
 <style lang="postcss">
     .content {
-        @apply max-w-xs w-full p-5;
+        @apply max-w-xs w-full mx-auto;
     }
 
     h2 {
