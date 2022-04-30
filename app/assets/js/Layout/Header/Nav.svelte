@@ -12,6 +12,7 @@
         "index": router.generate("index", true),
         "login": router.generate("login", true),
         "logout": router.generate("logout", true),
+        "register": router.generate("register", true),
     }
 
 </script>
@@ -26,7 +27,7 @@
         <a href="{urls["logout"]}" use:inertia>Log&nbsp;out</a>
     {:else}
         <a href="{urls["login"]}" use:inertia>Log&nbsp;in</a>
-        <a href="/" use:inertia>Sign&nbsp;up</a>
+        <a href="{urls["register"]}" use:inertia>Sign&nbsp;up</a>
     {/if}
 </nav>
 

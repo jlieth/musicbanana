@@ -1,51 +1,44 @@
-<!-- based on https://tailwindcomponents.com/component/simple-login-screen -->
-
 <script lang="ts">
-    import { inertia, useForm } from "@inertiajs/inertia-svelte"
+    import { useForm } from "@inertiajs/inertia-svelte"
     import router from "@/router"
     import Main from "@/Layout/Main.svelte"
 
-    let urls = {
-        login: router.generate("login_attempt", true),
-        register: router.generate("register", true),
-    }
+    export let token: String
 
+    let url = router.generate("register_attempt", true)
     let form = useForm({
         name: null,
-        password: null,
+        email: null,
+        plainPassword: null,
+        _token: token,
     })
 
     function submit() {
-        $form.post(urls["login"])
+        let options = {forceFormData: true}
+        $form.post(url, options)
     }
 </script>
 
 <Main>
     <div slot="sidebar" class="hidden"></div>
     <div slot="content" class="content">
-        <h2>Login</h2>
+        <h2>Create an account</h2>
+
         <form on:submit|preventDefault={submit}>
             <div>
-                <label for="name">Username</label>
-                <input id="name" name="name" type="text" bind:value={$form.name} required>
+                <label for="name" class="required">Name</label>
+                <input type="text" id="name" name="name" bind:value={$form.name} minlength="2" maxlength="180" required />
             </div>
             <div>
-                <label for="password">Password</label>
-                <input id="password" name="password" type="password" bind:value={$form.password} required>
+                <label for="email" class="required">Email</label>
+                <input type="email" id="email" name="email" bind:value={$form.email} maxlength="255" required />
             </div>
-
-            <div class="text-right text-sm">
-                <a href="/">Forgot your password?</a>
-            </div>
-
             <div>
-                <button type="submit" disabled={$form.processing}>Log In</button>
+                <label for="password" class="required">Password</label>
+                <input type="password" id="password" name="password" bind:value={$form.plainPassword} autocomplete="new-password" required />
             </div>
 
-            <div class="mt-6 text-center">
-                Don't have an account yet?
-                <a href="{urls["register"]}" class="underline" use:inertia>Register here</a>
-            </div>
+            <button type="submit">Sign up</button>
         </form>
     </div>
 </Main>

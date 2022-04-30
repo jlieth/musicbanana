@@ -9,25 +9,32 @@ namespace App\Controller;
 use RuntimeException;
 use App\Controller\Traits\DefaultProps;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Rompetomp\InertiaBundle\Service\InertiaInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class BaseController extends AbstractController
 {
     use DefaultProps;
 
+    protected EntityManagerInterface $em;
+    protected RequestStack $requestStack;
+    protected CsrfTokenManagerInterface $tokenManager;
     protected InertiaInterface $inertia;
-
     protected ValidatorInterface $validator;
 
-    protected RequestStack $requestStack;
-
-    public function __construct(RequestStack $requestStack)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        RequestStack $requestStack,
+        CsrfTokenManagerInterface $tokenManager
+    ) {
+        $this->em = $entityManager;
         $this->requestStack = $requestStack;
+        $this->tokenManager = $tokenManager;
     }
 
     /**

@@ -4,40 +4,47 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class RegistrationController extends AbstractController
+class RegistrationController extends BaseController
 {
-    #[Route("/register", name: "app_register")]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    #[Route("/register", name: "register", methods: ["GET"], options: ["expose" => true])]
+    #[Route("/register", name: "register_attempt", methods: ["POST"], options: ["expose" => true])]
+    public function registerGet(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
+        if ($request->getMethod() === "POST") {
+            $user = new User();
+            $form = $this->createForm(RegistrationFormType::class, $user);
+            $form->submit($request->request->all());
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get("plainPassword")->getData()
-                )
-            );
+            $errors = [];
+            foreach ($form->getErrors(true) as $error) {
+                $errors[] = $error->getMessage();
+            }
+            $this->addFlash("error", $errors);
 
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // do anything else you need here, like send an email
+            if ($form->isValid()) {
+                // encode the plain password
+                $plaintext = $form->get("plainPassword")->getData();
+                $password = $userPasswordHasher->hashPassword($user, $plaintext);
 
-            return $this->redirectToRoute("index");
+                $user->setPassword($password);
+                $this->em->persist($user);
+                $this->em->flush();
+
+                $msg = "Your account has been created. You can log in now.";
+                $this->addFlash("success", [$msg]);
+
+                return $this->redirectToRoute("login");
+            }
         }
 
-        return $this->render("register.html.twig", [
-            "registrationForm" => $form->createView(),
-        ]);
+        $token = $this->tokenManager->getToken("registration_form")->getValue();
+        $props = ["token" => $token];
+
+        return $this->renderWithInertia("Register", $props);
     }
 }
