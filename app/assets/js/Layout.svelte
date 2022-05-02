@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from "@inertiajs/inertia-svelte"
     import { BorderAlert } from "flowbite-svelte";
-    import Header from "@/Layout/Header/Header.svelte"
+    import Header from "@/Components/Header/Header.svelte"
 
     $: console.log($page.props)
     $: flash = $page.props.flash

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { useForm } from "@inertiajs/inertia-svelte"
     import router from "@/router"
-    import Main from "@/Layout/Main.svelte"
+    import Layout from "@/Layout.svelte"
 
     export let token: String
 
@@ -19,7 +19,7 @@
     }
 </script>
 
-<Main>
+<Layout>
     <div slot="content" class="content">
         <h2>Create an account</h2>
 
@@ -40,7 +40,7 @@
             <button type="submit">Sign up</button>
         </form>
     </div>
-</Main>
+</Layout>
 
 <style lang="postcss">
     .content {

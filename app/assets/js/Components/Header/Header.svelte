@@ -1,9 +1,9 @@
 <script lang="ts">
     import { page } from "@inertiajs/inertia-svelte"
-    import Avatar from "@/Layout/Header/Avatar.svelte"
-    import Hamburger from "@/Layout/Header/Hamburger.svelte"
-    import Logo from "@/Layout/Header/Logo.svelte"
-    import Nav from "@/Layout/Header/Nav.svelte"
+    import Avatar from "@/Components/Header/Avatar.svelte"
+    import Hamburger from "@/Components/Header/Hamburger.svelte"
+    import Logo from "@/Components/Header/Logo.svelte"
+    import Nav from "@/Components/Header/Nav.svelte"
 
     $: user = $page.props.user
     let open = false

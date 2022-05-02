@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Main from "@/Layout/Main.svelte"
+    import Layout from "@/Layout.svelte"
     import CountCards from "@/Components/CountCards.svelte"
 
     export let counts: {
@@ -10,7 +10,7 @@
     }
 </script>
 
-<Main>
+<Layout>
     <div slot="content" class="content">
         <div>
             <p>
@@ -69,7 +69,7 @@
 
         <CountCards {counts} />
     </div>
-</Main>
+</Layout>
 
 <style>
     .content {

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { inertia, page } from "@inertiajs/inertia-svelte"
     import router from "@/router"
-    import SearchBar from "@/Layout/Header/SearchBar.svelte"
+    import SearchBar from "@/Components/Header/SearchBar.svelte"
 
     export let open = false
     $: hide = !open
