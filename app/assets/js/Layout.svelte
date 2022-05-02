@@ -4,7 +4,6 @@
     import Header from "@/Components/Header/Header.svelte"
 
     $: console.log($page.props)
-    $: flash = $page.props.flash
 </script>
 
 <Header />
