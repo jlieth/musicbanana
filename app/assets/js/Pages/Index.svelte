@@ -11,7 +11,6 @@
 </script>
 
 <Main>
-    <div slot="sidebar" class="hidden"></div>
     <div slot="content" class="content">
         <div>
             <p>

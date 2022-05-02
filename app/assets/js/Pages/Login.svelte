@@ -21,7 +21,6 @@
 </script>
 
 <Main>
-    <div slot="sidebar" class="hidden"></div>
     <div slot="content" class="content">
         <h2>Login</h2>
         <form on:submit|preventDefault={submit}>

@@ -9,33 +9,21 @@
 
 <Header />
 <div id="wrapper">
-    <slot name="sidebar">
-        <aside>
-            <ul class="w-full">
-                <li>foo</li>
-                <li>bar</li>
-            </ul>
-        </aside>
+    <slot name="flash">
+        <div class="flash">
+            {#each flash.error as error}
+            <BorderAlert alertId="border-alert-2" color="red" closeBtn>
+                {error}
+            </BorderAlert>
+            {/each}
+            {#each flash.success as success}
+            <BorderAlert alertId="border-alert-2" color="green" closeBtn>
+                {success}
+            </BorderAlert>
+            {/each}
+        </div>
     </slot>
-
-    <main>
-        <slot name="flash">
-            <div class="flash">
-                {#each flash.error as error}
-                <BorderAlert alertId="border-alert-2" color="red" closeBtn>
-                    {error}
-                </BorderAlert>
-                {/each}
-                {#each flash.success as success}
-                <BorderAlert alertId="border-alert-2" color="green" closeBtn>
-                    {success}
-                </BorderAlert>
-                {/each}
-            </div>
-        </slot>
-        <slot name="content" />
-    </main>
-
+    <slot name="content" />
 </div>
 
 <style>
@@ -48,13 +36,5 @@
         @apply flex flex-row md:flex-col;
         @apply border border-gray-500 border-opacity-50 md:border-0;
         @apply bg-gray-100;
-    }
-
-    aside {
-        @apply max-w-[250px] w-full grow-0 shrink-0;
-    }
-
-    main {
-        @apply w-full grow shrink;
     }
 </style>
