@@ -1,14 +1,17 @@
 <script lang="ts">
     import { UserIconOutline } from "@codewithshin/svelte-heroicons"
     import { page } from "@inertiajs/inertia-svelte"
+    import router from "@/router"
 
     let class_ = ""
     export {class_ as class}
 
-    $: user = $page.props.user
+    let user = $page.props.user
+    let nameEncoded = encodeURIComponent(user.name)
+    let href = router.generate("user_overview", {name: nameEncoded})
 </script>
 
-<a href="/" class="{class_}" title="Go to your profile">
+<a {href} class="{class_}" title="Go to your profile">
     <div class="avatar">
         {#if user.avatar}
             <img src="{user.avatar}" alt="avatar">
