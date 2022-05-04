@@ -21,7 +21,7 @@
 </script>
 
 <Layout>
-    <div slot="content" class="content">
+    <main slot="main">
         <h2>Login</h2>
         <form on:submit|preventDefault={submit}>
             <div>
@@ -46,11 +46,11 @@
                 <a href="{urls["register"]}" class="underline" use:inertia>Register here</a>
             </div>
         </form>
-    </div>
+    </main>
 </Layout>
 
 <style lang="postcss">
-    .content {
+    main {
         @apply max-w-xs w-full mx-auto;
     }
 

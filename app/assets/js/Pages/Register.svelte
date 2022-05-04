@@ -20,7 +20,7 @@
 </script>
 
 <Layout>
-    <div slot="content" class="content">
+    <main slot="main">
         <h2>Create an account</h2>
 
         <form on:submit|preventDefault={submit}>
@@ -39,11 +39,11 @@
 
             <button type="submit">Sign up</button>
         </form>
-    </div>
+    </main>
 </Layout>
 
 <style lang="postcss">
-    .content {
+    main {
         @apply max-w-xs w-full mx-auto;
     }
 

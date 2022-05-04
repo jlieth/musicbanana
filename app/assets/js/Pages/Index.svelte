@@ -11,7 +11,7 @@
 </script>
 
 <Layout>
-    <div slot="content" class="content">
+    <main slot="main">
         <div>
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
@@ -68,11 +68,11 @@
         <div class="border border-highlight-700"></div>
 
         <CountCards {counts} />
-    </div>
+    </main>
 </Layout>
 
 <style>
-    .content {
+    main {
         @apply flex flex-row md:flex-col items-stretch gap-3 p-3 md:p-0;
     }
 </style>

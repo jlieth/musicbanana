@@ -3,14 +3,13 @@
 </script>
 
 <Layout>
-    <div slot="sidebar" class="hidden"></div>
-    <div slot="content" class="content">
+    <main slot="main">
         Hi
-    </div>
+    </main>
 </Layout>
 
 <style>
-    .content {
+    main {
         @apply flex flex-row md:flex-col items-stretch gap-3 p-3 md:p-0;
     }
 </style>
