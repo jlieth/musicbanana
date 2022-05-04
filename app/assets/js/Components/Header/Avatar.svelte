@@ -1,6 +1,6 @@
 <script lang="ts">
     import { UserIconOutline } from "@codewithshin/svelte-heroicons"
-    import { page } from "@inertiajs/inertia-svelte"
+    import { inertia, page } from "@inertiajs/inertia-svelte"
     import router from "@/router"
 
     let class_ = ""
@@ -11,7 +11,7 @@
     let href = router.generate("user_overview", {name: nameEncoded})
 </script>
 
-<a {href} class="{class_}" title="Go to your profile">
+<a {href} class="{class_}" title="Go to your profile" use:inertia>
     <div class="avatar">
         {#if user.avatar}
             <img src="{user.avatar}" alt="avatar">
