@@ -20,11 +20,9 @@ class RegistrationController extends BaseController
             $form = $this->createForm(RegistrationFormType::class, $user);
             $form->submit($request->request->all());
 
-            $errors = [];
             foreach ($form->getErrors(true) as $error) {
-                $errors[] = $error->getMessage();
+                $this->addFlash("error", $error->getMessage());
             }
-            $this->addFlash("error", $errors);
 
             if ($form->isValid()) {
                 // encode the plain password
@@ -36,7 +34,7 @@ class RegistrationController extends BaseController
                 $this->em->flush();
 
                 $msg = "Your account has been created. You can log in now.";
-                $this->addFlash("success", [$msg]);
+                $this->addFlash("success", $msg);
 
                 return $this->redirectToRoute("login");
             }

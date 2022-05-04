@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Traits;
 
-use ArrayObject;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -18,8 +17,7 @@ trait DefaultProps
      */
     protected function buildDefaultProps(Request $request, ?User $user): array
     {
-        $props = [];
-        $props["user"] = null;
+        $props = ["user" => null];
 
         if ($user !== null) {
             $props["user"] = [
@@ -28,26 +26,28 @@ trait DefaultProps
             ];
         }
 
-        $success = [];
-        $error = [];
         // @phpstan-ignore-next-line
         if ($request->hasSession()) {
             /** @var Session $session */
             $session = $request->getSession();
 
             if ($session->getFlashBag()->has("success")) {
-                $flashSuccessMessages = $session->getFlashBag()->get("success");
-                $success = reset($flashSuccessMessages);
+                $success = $session->getFlashBag()->get("success");
             }
 
             if ($session->getFlashBag()->has("error")) {
-                $flashErrorMessages = $session->getFlashBag()->get("error");
-                $error = reset($flashErrorMessages);
+                $error = $session->getFlashBag()->get("error");
+            }
+
+            if ($session->getFlashBag()->has("notice")) {
+                $notice = $session->getFlashBag()->get("notice");
             }
         }
+
         $props["flash"] = [
-            "success" => $success,
-            "error" => $error
+            "success" => $success ?? [],
+            "error" => $error ?? [],
+            "notice" => $notice ?? [],
         ];
 
         return $props;
