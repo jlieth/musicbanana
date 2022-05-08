@@ -1,0 +1,10 @@
+{
+    "files.watcherExclude": {
+        ".git/objects": true,
+        ".git/subtree-cache": true,
+        "app/node_modules": true,
+        "app/public/build": true,
+        "app/var": true,
+        "app/vendor": true
+    }
+}
