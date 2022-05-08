@@ -9,7 +9,7 @@
     let open = false
 </script>
 
-<header>
+<header class="primary">
     <div>
         <!-- musicbanana text -->
         <Logo />
@@ -36,7 +36,7 @@
         @apply bg-gradient-to-b from-header-800 via-header-800 to-header-900;
     }
 
-    :global(header) {
+    :global(header.primary) {
         @apply text-gray-200;
     }
 
