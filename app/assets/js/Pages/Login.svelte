@@ -51,7 +51,7 @@
 
 <style lang="postcss">
     main {
-        @apply max-w-xs w-full mx-auto;
+        @apply max-w-xs w-full mx-auto p-4;
     }
 
     h2 {
