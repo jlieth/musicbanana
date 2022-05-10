@@ -1,13 +1,15 @@
 <script lang="ts">
-    import { HeartIconSolid, HeartIconOutline } from "@codewithshin/svelte-heroicons"
+    import { EyeOffIconSolid, HeartIconSolid, HeartIconOutline } from "@codewithshin/svelte-heroicons"
+    import type { RecentTrack } from "@/types"
 
-    let items: Array<{ loved: boolean}> = [
-        {loved: false}, {loved: true}, {loved: true}
+    let items: RecentTrack[] = [
+        {track: "Track", artist: "Artist", timestamp: "15 minutes ago", loved: false, private: true},
+        {track: "Track", artist: "Artist", timestamp: "15 minutes ago", loved: true, private: false},
+        {track: "Track", artist: "Artist", timestamp: "15 minutes ago", loved: true, private: true}
     ];
-    let dateformat = "timesince";
 </script>
 
-<table class="recentList w-full max-w-md border-collapse table-auto">
+<table class="recentList">
     <tbody>
         {#each items as item}
         <tr>
@@ -18,15 +20,16 @@
                 <HeartIconOutline className="h-6 w-6 text-gray-400" />
                 {/if}
             </td>
-            <td class="track"><a href="/">Track</a></td>
-            <td class="artist"><a href="/">Artist</a></td>
-            <td class="time">
-                {#if dateformat == "timesince"}
-                    <span class="timestamp momentjs">15 minutes ago</span>
-                {:else}
-                    <span class="timestamp">g1eü9hü</span>
+            <td class="track"><a href="/">{item.track}</a></td>
+            <td class="artist"><a href="/">{item.artist}</a></td>
+            <td class="private">
+                {#if item.private}
+                <div title="Private listen, only visible to you">
+                    <EyeOffIconSolid className="h-6 w-6 text-gray-400" />
+                </div>
                 {/if}
             </td>
+            <td class="timestamp">{item.timestamp}</td>
         </tr>
         {:else}
             <p>No scrobbles in this time period</p>
@@ -35,9 +38,13 @@
 </table>
 
 <style lang="postcss">
+    table {
+        @apply w-full max-w-md border-collapse shadow-lg;
+    }
+
     tr {
-        @apply flex p-2 items-center gap-1 md:gap-0 md:flex-wrap;
-        @apply border-b border-gray-400;
+        @apply flex p-2 items-center gap-x-1 md:flex-wrap;
+        @apply border-b border-opacity-50 border-gray-400;
         @apply text-sm;
     }
 
@@ -46,7 +53,7 @@
     }
 
     td.loved {
-        @apply md:order-2;
+        @apply md:order-3;
     }
 
     td.track {
@@ -54,11 +61,15 @@
     }
 
     td.artist {
-        @apply grow shrink truncate md:w-full md:order-3;
+        @apply grow shrink truncate md:w-full md:order-4;
     }
 
-    td.time {
-        @apply shrink-0 md:w-full md:order-4 text-gray-500;
+    td.private {
+        @apply h-6 w-6 md:order-2;
+    }
+
+    td.timestamp {
+        @apply shrink-0 md:w-full md:order-5 text-gray-500;
     }
 
 </style>

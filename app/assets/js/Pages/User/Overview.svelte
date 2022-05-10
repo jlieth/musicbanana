@@ -27,7 +27,7 @@
     }
 
     h3 {
-        @apply text-xl;
+        @apply mb-2 text-xl;
     }
 
 
