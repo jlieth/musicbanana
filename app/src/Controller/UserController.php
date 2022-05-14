@@ -13,16 +13,29 @@ class UserController extends BaseController
     #[Route("/user/{name}", name: "user_overview", methods: ["GET"], options: ["expose" => true])]
     public function overview(String $name): Response
     {
-        $name = rawurldecode($name);
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        /** @var \App\Repository\UserRepository $userRepository */
         $userRepository = $this->em->getRepository(User::class);
-        $profileUser = $userRepository->findOneBy(["name" => $name]);
+        $profileUserName = rawurldecode($name);
+        $profileUser = $userRepository->findOneBy(["name" => $profileUserName]);
 
         if ($profileUser === null) {
             throw $this->createNotFoundException("User not found");
         }
 
+        $publicOnly = ($user !== $profileUser);
+
+        // get recent tracks
+        $recentTracks = $userRepository->getListens($profileUser);
+        if ($publicOnly) {
+            $recentTracks->public();
+        }
+
         $props = [
-            "profileUser" => $profileUser->getName()
+            "profileUser" => $profileUser->getName(),
+            "recentTracks" => $recentTracks->fetchAllAssociative(),
         ];
         return $this->renderWithInertia("User/Overview", $props);
     }
