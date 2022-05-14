@@ -1,75 +1,61 @@
 <script lang="ts">
     import { EyeOffIconSolid, HeartIconSolid, HeartIconOutline } from "@codewithshin/svelte-heroicons"
+    import { page } from "@inertiajs/inertia-svelte"
     import type { RecentTrack } from "@/types"
 
-    let items: RecentTrack[] = [
-        {track: "Track", artist: "Artist", timestamp: "15 minutes ago", loved: false, private: true},
-        {track: "Track", artist: "Artist", timestamp: "15 minutes ago", loved: true, private: false},
-        {track: "Track", artist: "Artist", timestamp: "15 minutes ago", loved: true, private: true}
-    ];
+    let items: RecentTrack[] = $page.props.recentTracks
 </script>
 
-<table class="recentList">
-    <tbody>
-        {#each items as item}
-        <tr>
-            <td class="loved">
-                {#if item.loved}
-                <HeartIconSolid className="h-6 w-6 text-red-700" />
-                {:else}
-                <HeartIconOutline className="h-6 w-6 text-gray-400" />
-                {/if}
-            </td>
-            <td class="track"><a href="/">{item.track}</a></td>
-            <td class="artist"><a href="/">{item.artist}</a></td>
-            <td class="private">
-                {#if item.private}
-                <div title="Private listen, only visible to you">
-                    <EyeOffIconSolid className="h-6 w-6 text-gray-400" />
-                </div>
-                {/if}
-            </td>
-            <td class="timestamp">{item.timestamp}</td>
-        </tr>
-        {:else}
-            <p>No scrobbles in this time period</p>
-        {/each}
-    </tbody>
-</table>
+
+<div class="recentList">
+    {#each items as item}
+    <div class="listen">
+        <div class="loved">
+            {#if item.loved}
+            <HeartIconSolid className="h-6 w-6 text-red-700" />
+            {:else}
+            <HeartIconOutline className="h-6 w-6 text-gray-400" />
+            {/if}
+        </div>
+        <div class="info">
+            <a class="track" href="/">{item.track}</a>
+            <a class="artist" href="/">{item.artist}</a>
+            <span class="timestamp">{item.timestamp}</span>
+        </div>
+    </div>
+    {:else}
+        <p>No listens in this time period</p>
+    {/each}
+</div>
 
 <style lang="postcss">
-    table {
-        @apply w-full max-w-md border-collapse shadow-lg;
+    div.recentList {
+        @apply w-full max-w-md shadow-lg;
     }
 
-    tr {
-        @apply flex p-2 items-center gap-x-1 md:flex-wrap;
+    div.listen {
+        @apply flex flex-row p-2 items-center gap-x-1;
         @apply border-b border-opacity-50 border-gray-400;
         @apply text-sm;
     }
 
-    td {
-        @apply flex items-center;
+    div.loved {
+        @apply md:order-2;
     }
 
-    td.loved {
-        @apply md:order-3;
+    div.info {
+        @apply md:order-1 w-full flex flex-row md:flex-col;
     }
 
-    td.track {
-        @apply font-bold grow shrink truncate md:order-1;
+    a.track {
+        @apply w-[60%] md:w-full grow-0 shrink truncate md:whitespace-normal font-bold;
     }
 
-    td.artist {
-        @apply grow shrink truncate md:w-full md:order-4;
+    a.artist {
+        @apply w-[40%] md:w-full grow-0 shrink truncate md:whitespace-normal;
     }
 
-    td.private {
-        @apply h-6 w-6 md:order-2;
+    span.timestamp {
+        @apply md:w-full shrink-0 text-gray-500;
     }
-
-    td.timestamp {
-        @apply shrink-0 md:w-full md:order-5 text-gray-500;
-    }
-
 </style>
