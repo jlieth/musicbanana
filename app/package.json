@@ -10,6 +10,7 @@
         "flowbite": "^1.4.2",
         "flowbite-svelte": "^0.14.13",
         "fork-ts-checker-webpack-plugin": "^6.5.1",
+        "javascript-time-ago": "^2.3.13",
         "postcss": "^8.4.12",
         "regenerator-runtime": "^0.13.2",
         "svelte": "^3.47.0",

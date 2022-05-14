@@ -1,7 +1,13 @@
 <script lang="ts">
     import { EyeOffIconSolid, HeartIconSolid, HeartIconOutline } from "@codewithshin/svelte-heroicons"
     import { page } from "@inertiajs/inertia-svelte"
+    import TimeAgo from "javascript-time-ago"
+    import en from "javascript-time-ago/locale/en.json"
+
     import type { RecentTrack } from "@/types"
+
+    TimeAgo.addDefaultLocale(en)
+    const timeAgo = new TimeAgo("en-US")
 
     let items: RecentTrack[] = $page.props.recentTracks
 </script>
@@ -20,7 +26,9 @@
         <div class="info">
             <a class="track" href="/">{item.track}</a>
             <a class="artist" href="/">{item.artist}</a>
-            <span class="timestamp">{item.timestamp}</span>
+            <span class="timestamp" title="{item.timestamp}">
+                {timeAgo.format(new Date(item.timestamp))}
+            </span>
         </div>
     </div>
     {:else}
