@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 namespace App\QueryBuilder;
-use Doctrine\DBAL\Connection;
 
+use Doctrine\DBAL\Connection;
 use App\Entity\User;
 
 class ListenQueryBuilder extends BaseQueryBuilder {
