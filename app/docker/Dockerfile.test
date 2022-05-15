@@ -1,0 +1,18 @@
+FROM composer:2.3.5 as composer
+FROM php:8.0.19-cli-alpine3.15
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+COPY docker/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
+
+RUN apk add --no-cache su-exec=0.2-r1 && \
+    rm -rf /var/cache/apk/*
+
+WORKDIR /app
+
+COPY composer.* ./
+
+# Install dependencies and move them to /
+RUN composer install && mv ./vendor /
+
+CMD ["php", "bin/phpunit"]

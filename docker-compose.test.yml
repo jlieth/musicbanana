@@ -1,0 +1,33 @@
+networks:
+    mb-test:
+
+volumes:
+    musicbanana-test-postgres-data: {}
+    musicbanana-test-vendor: {}
+
+services:
+    test-db:
+        image: postgres:13-alpine
+        networks:
+            - mb-test
+        env_file: docker/env-files/postgres.env
+        volumes:
+            - type: volume
+              source: musicbanana-test-postgres-data
+              target: /var/lib/postgresql/data
+
+    testrunner:
+        build:
+            context: ./app
+            dockerfile: docker/Dockerfile.test
+        networks:
+            - mb-test
+        depends_on:
+            - test-db
+        volumes:
+            - type: bind
+              source: ./app
+              target: /app/
+            - type: volume
+              source: musicbanana-test-vendor
+              target: /app/vendor

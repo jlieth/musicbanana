@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+# delete vendor files
+rm -rf ./vendor/*
+
+# save uid and gid of host user
+userid=$(stat -c %u bin/console)
+groupid=$(stat -c %g bin/console)
+
+# change permissions of vendor dir to host user
+chown "$userid":"$groupid" ./vendor
+
+# copy vendor files
+su-exec "$userid":"$groupid" cp -R /vendor/* ./vendor
+
+# drop privileges
+exec su-exec "$userid":"$groupid" "$@"
