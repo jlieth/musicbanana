@@ -10,7 +10,10 @@ services:
         image: postgres:13-alpine
         networks:
             - mb-test
-        env_file: docker/env-files/postgres.env
+        environment:
+            POSTGRES_USER: test
+            POSTGRES_PASSWORD: test
+            POSTGRES_DB: mb_test
         volumes:
             - type: volume
               source: musicbanana-test-postgres-data
@@ -24,6 +27,12 @@ services:
             - mb-test
         depends_on:
             - test-db
+        environment:
+            APP_ENV: test
+            POSTGRES_VERSION: 13
+            POSTGRES_USER: test
+            POSTGRES_PASSWORD: test
+            POSTGRES_DB: mb_test
         volumes:
             - type: bind
               source: ./app
