@@ -5,7 +5,10 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 COPY docker/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 
-RUN apk add --no-cache su-exec=0.2-r1 && \
+RUN apk add --no-cache \
+        su-exec=0.2-r1 \
+        postgresql13-dev=13.6-r0 && \
+    docker-php-ext-install pdo_pgsql && \
     rm -rf /var/cache/apk/*
 
 WORKDIR /app
