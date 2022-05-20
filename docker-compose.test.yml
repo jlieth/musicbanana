@@ -16,7 +16,7 @@ services:
             POSTGRES_DB: mb_test
         volumes:
             - type: volume
-              source: musicbanana-test-postgres-data
+              source: test-postgres-data
               target: /var/lib/postgresql/data
 
     testrunner:
@@ -38,5 +38,5 @@ services:
               source: ./app
               target: /app/
             - type: volume
-              source: musicbanana-test-vendor
+              source: test-vendor
               target: /app/vendor
