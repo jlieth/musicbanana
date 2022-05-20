@@ -2,8 +2,8 @@ networks:
     mb-test:
 
 volumes:
-    musicbanana-test-postgres-data: {}
-    musicbanana-test-vendor: {}
+    test-postgres-data: {}
+    test-vendor: {}
 
 services:
     test-db:
