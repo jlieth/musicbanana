@@ -32,7 +32,7 @@ services:
             POSTGRES_VERSION: 13
             POSTGRES_USER: test
             POSTGRES_PASSWORD: test
-            POSTGRES_DB: mb_test
+            POSTGRES_DB: mb
         volumes:
             - type: bind
               source: ./app
