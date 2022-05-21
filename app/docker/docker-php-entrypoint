@@ -14,5 +14,12 @@ chown "$userid":"$groupid" ./vendor
 # copy vendor files
 su-exec "$userid":"$groupid" cp -R /vendor/* ./vendor
 
+# drop and re-create database
+su-exec "$userid":"$groupid" bin/console --env=test doctrine:database:drop --force
+su-exec "$userid":"$groupid" bin/console --env=test doctrine:database:create
+
+# create tables
+su-exec "$userid":"$groupid" bin/console --env=test doctrine:schema:create
+
 # drop privileges
 exec su-exec "$userid":"$groupid" "$@"
