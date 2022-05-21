@@ -18,7 +18,7 @@ class Artist
     #[ORM\Column(type: "string", length: 1024, unique: true)]
     private $name;
 
-    #[ORM\Column(type: "string", length: 36)]
+    #[ORM\Column(type: "string", length: 36, nullable: true)]
     private $mbid;
 
     #[ORM\OneToMany(mappedBy: "artist", targetEntity: Album::class, orphanRemoval: true)]

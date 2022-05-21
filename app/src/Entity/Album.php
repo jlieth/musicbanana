@@ -19,7 +19,7 @@ class Album
     #[ORM\Column(type: "string", length: 1024)]
     private $title;
 
-    #[ORM\Column(type: "string", length: 36)]
+    #[ORM\Column(type: "string", length: 36, nullable: true)]
     private $mbid;
 
     #[ORM\ManyToOne(targetEntity: Artist::class, inversedBy: "albums")]
