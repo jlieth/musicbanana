@@ -125,71 +125,80 @@ class ListenQueryBuilderTest extends BaseDbTest {
      *
      * daterange() takes two arguments: $start and $end of the requested
      * range. $end is optional; if no end datetime is given, it is set to
-     * now.
+     * now. The method should return all listens that fall in this time range,
+     * with $start inclusive and $end exclusive.
      *
-     * For a listen with a given date, three cases are possible:
-     * - the date is before $start, so it falls out of range
-     * - the date is between $start and $end, so it is within range
-     * - the date is after $end, so it falls out of range
+     * This test should cover the following assertions:
+     * - listens with a timestamp earlier than $start should not be returned
+     * - listens with the same timestamp as $start should be returned
+     * - listens with the same timestamp as $end should not be returned
+     * - listens with a timestamp later than $end should not be returned
+     * - listens with a timestamp $start <= timestamp < $end should be returned
+     * - additionally, when $end is not given, $end is set to now, so the list
+     *   of listens that is expected to be returned changes
      *
-     * To test this function, create four listens with the following dates:
-     * - listen1: four days ago
-     * - listen2: two days ago
-     * - listen3: now
-     * - listen4: tomorrow
+     * |        |                      |         |     expected to be returned     |
+     * | vars   | datetimes            | listens | when end given | when not given |
+     * |--------|----------------------|---------|----------------|----------------|
+     * |        | <2019-01-01T00:00:00 | listen1 | NO             | NO             |
+     * | $start |  2019-01-01T00:00:00 | listen2 | YES            | YES            |
+     * |        |  ...                 | listen3 | YES            | YES            |
+     * | $end   |  2021-01-01T00:00:00 | listen4 | NO             | YES            |
+     * |        | >2021-01-01T00:00:00 | listen5 | NO             | YES            |
+     * |        |  now                 | listen6 | NO             | YES*           |
      *
-     * Set the range end points:
-     * - $start: three days ago
-     * - $end: yesterday
-     *
-     * Expected results:
-     * - with no $end given, listen2 and listen3 should be returned
-     * - with $end given, only listen2 should be returned
+     * Caveat for listens with a timestamp identical to "now": Since $end is
+     * exclusive, this listen will only be returned when "now" is later than
+     * its timestamp. For the test, I substracted one second from the timestamp.
      */
     public function testDaterange(): void
     {
         $utc = new DateTimeZone("UTC");
+        $start = new DateTime("2019-01-01T00:00:00", $utc);
+        $end = new DateTime("2021-01-01T00:00:00", $utc);
 
         // profile and track info don't matter
         $profile = $this->profiles[0];
         $track = $this->tracks[0];
 
         // create listens
-        $date1 = (new DateTime("now", $utc))->sub(new DateInterval("P4D"));
+        $date1 = new DateTime("2018-01-01T00:00:00", $utc);
+        $date2 = $start;
+        $date3 = new DateTime("2020-01-01T00:00:00", $utc);
+        $date4 = $end;
+        $date5 = new DateTime("2022-01-01T00:00:00", $utc);
+        $date6 = (new DateTime("now", $utc))->sub(new DateInterval("PT1S"));
+
         $listen1 = $this->createListen($date1, $profile, $track->getArtist(), $track->getAlbum(), $track);
-
-        $date2 = (new DateTime("now", $utc))->sub(new DateInterval("P2D"));
         $listen2 = $this->createListen($date2, $profile, $track->getArtist(), $track->getAlbum(), $track);
-
-        $date3 = new DateTime("now", $utc);
         $listen3 = $this->createListen($date3, $profile, $track->getArtist(), $track->getAlbum(), $track);
-
-        $date4 = (new DateTime("now", $utc))->add(new DateInterval("P1D"));
         $listen4 = $this->createListen($date4, $profile, $track->getArtist(), $track->getAlbum(), $track);
-
-        // create range end points
-        $start = (new DateTime("now", $utc))->sub(new DateInterval("P3D"));
-        $end = (new DateTime("now", $utc))->sub(new DateInterval("P1D"));
-
-        // filter without giving $end
-        $qb = $this->getQB()->select("l.id")->daterange($start);
-        $rows = $qb->fetchFirstColumn();
-
-        $this->assertCount(2, $rows);
-        $this->assertEquals($rows[0], $listen2->getId());
-        $this->assertEquals($rows[1], $listen3->getId());
-        $this->assertNotTrue(in_array($listen1->getId(), $rows));
-        $this->assertNotTrue(in_array($listen4->getId(), $rows));
+        $listen5 = $this->createListen($date5, $profile, $track->getArtist(), $track->getAlbum(), $track);
+        $listen6 = $this->createListen($date6, $profile, $track->getArtist(), $track->getAlbum(), $track);
 
         // filter with giving $end
         $qb = $this->getQB()->select("l.id")->daterange($start, $end);
         $rows = $qb->fetchFirstColumn();
 
-        $this->assertCount(1, $rows);
-        $this->assertEquals($rows[0], $listen2->getId());
+        $this->assertCount(2, $rows);
+        $this->assertTrue(in_array($listen2->getId(), $rows));
+        $this->assertTrue(in_array($listen3->getId(), $rows));
         $this->assertNotTrue(in_array($listen1->getId(), $rows));
-        $this->assertNotTrue(in_array($listen3->getId(), $rows));
         $this->assertNotTrue(in_array($listen4->getId(), $rows));
+        $this->assertNotTrue(in_array($listen5->getId(), $rows));
+        $this->assertNotTrue(in_array($listen6->getId(), $rows));
+
+        // filter without giving $end
+        $qb = $this->getQB()->select("l.id")->daterange($start);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(5, $rows);
+        $this->assertTrue(in_array($listen2->getId(), $rows));
+        $this->assertTrue(in_array($listen3->getId(), $rows));
+        $this->assertTrue(in_array($listen4->getId(), $rows));
+        $this->assertTrue(in_array($listen5->getId(), $rows));
+        $this->assertTrue(in_array($listen6->getId(), $rows));
+        $this->assertNotTrue(in_array($listen1->getId(), $rows));
     }
 
     /**

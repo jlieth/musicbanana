@@ -57,7 +57,7 @@ class ListenQueryBuilder extends BaseQueryBuilder {
         $start = DateTimeImmutable::createFromMutable($start);
         $end = DateTimeImmutable::createFromMutable($end);
 
-        $this->andWhere("l.date BETWEEN :_start AND :_end");
+        $this->andWhere("l.date >= :_start AND l.date < :_end");
         $this->setParameter("_start", $start, Types::DATETIME_IMMUTABLE);
         $this->setParameter("_end", $end, Types::DATETIME_IMMUTABLE);
         return $this;
