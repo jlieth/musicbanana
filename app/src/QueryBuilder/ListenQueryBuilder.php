@@ -17,6 +17,18 @@ use Doctrine\DBAL\Types\Types;
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class ListenQueryBuilder extends BaseQueryBuilder {
+    private String $alias;
+
+    public function __construct(Connection $conn, String $alias = "l")
+    {
+        parent::__construct($conn);
+
+        // initialize qb
+        $this->alias = $alias;
+        $tableName = self::TABLE_NAMES["listen"];
+        $this->from($tableName, $this->alias);
+    }
+
     public function year(DateTime $start): static
     {
         $end = clone $start;
@@ -57,7 +69,8 @@ class ListenQueryBuilder extends BaseQueryBuilder {
         $start = DateTimeImmutable::createFromMutable($start);
         $end = DateTimeImmutable::createFromMutable($end);
 
-        $this->andWhere("l.date >= :_start AND l.date < :_end");
+        $alias = $this->alias;
+        $this->andWhere("$alias.date >= :_start AND $alias.date < :_end");
         $this->setParameter("_start", $start, Types::DATETIME_IMMUTABLE);
         $this->setParameter("_end", $end, Types::DATETIME_IMMUTABLE);
         return $this;
@@ -82,51 +95,57 @@ class ListenQueryBuilder extends BaseQueryBuilder {
             $profileIds[] = $profile->getId();
         }
 
-        $this->andWhere("l.profile_id IN (:profiles)");
+        $alias = $this->alias;
+        $this->andWhere("$alias.profile_id IN (:profiles)");
         $this->setParameter("profiles", $profileIds, Connection::PARAM_INT_ARRAY);
         return $this;
     }
 
     public function filterByProfile(Profile $profile): static
     {
-        $this->andWhere("l.profile_id = :profile");
+        $alias = $this->alias;
+        $this->andWhere("$alias.profile_id = :profile");
         $this->setParameter("profile", $profile->getId());
         return $this;
     }
 
     public function filterByArtist(Artist $artist): static
     {
-        $this->andWhere("l.artist_id = :artist");
+        $alias = $this->alias;
+        $this->andWhere("$alias.artist_id = :artist");
         $this->setParameter("artist", $artist->getId());
         return $this;
     }
 
     public function filterByAlbum(Album $album): static
     {
-        $this->andWhere("l.album_id = :album");
+        $alias = $this->alias;
+        $this->andWhere("$alias.album_id = :album");
         $this->setParameter("album", $album->getId());
         return $this;
     }
 
     public function filterByTrack(Track $track): static
     {
-        $this->andWhere("l.track_id = :track");
+        $alias = $this->alias;
+        $this->andWhere("$alias.track_id = :track");
         $this->setParameter("track", $track->getId());
         return $this;
     }
 
     public function public(): static
     {
+        $alias = $this->alias;
         $profileTable = self::TABLE_NAMES["profile"];
 
         // join profile table if not yet joined
         $isJoined = in_array($profileTable, array_keys($this->joins));
         if (!$isJoined) {
-            $this->innerJoin("l", $profileTable, "p", "l.profile_id = p.id");
+            $this->innerJoin($alias, $profileTable, "p", "$alias.profile_id = p.id");
         }
 
-        $alias = $this->joins[$profileTable];
-        $this->andWhere("$alias.is_public = :_public");
+        $otherAlias = $this->joins[$profileTable];
+        $this->andWhere("$otherAlias.is_public = :_public");
         $this->setParameter("_public", true);
         return $this;
     }

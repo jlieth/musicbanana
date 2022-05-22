@@ -57,10 +57,7 @@ class ListenQueryBuilderTest extends BaseDbTest {
 
     private function getQB(): ListenQueryBuilder
     {
-        $tableName = $this->em->getClassMetadata("App:Listen")->getTableName();
-        $qb = new ListenQueryBuilder($this->conn);
-        $qb->from($tableName, "l");
-        return $qb;
+        return new ListenQueryBuilder($this->conn);
     }
 
     /**
