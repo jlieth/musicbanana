@@ -7,7 +7,7 @@ namespace App\Tests\QueryBuilder;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
-use App\Entity\{Album, Artist, Listen, Profile, Track, User};
+use App\Entity\{Album, Artist, Profile, Track, User};
 use App\QueryBuilder\ListenQueryBuilder;
 use App\Tests\BaseDbTest;
 
@@ -272,6 +272,42 @@ class ListenQueryBuilderTest extends BaseDbTest {
 
         // filter listens by album2
         $qb = $this->getQB()->select("l.id")->filterByAlbum($album2);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(1, $rows);
+        $this->assertEquals($rows[0], $listen2->getId());
+    }
+
+    /**
+     * Tests App\QueryBuilder\ListenQueryBuilder::filterByTrack
+     *
+     * Create two listens, one with track1 and another with track2.
+     * Filter listens by track1; only the first listen should be returned.
+     * Filter listens by track2; only the second listen should be returned.
+     */
+    public function testFilterByTrack(): void
+    {
+        $track1 = $this->tracks[0];
+        $track2 = $this->tracks[1];
+
+        // profile and date don't matter, but must be different for different listens
+        $profile1 = $this->profiles[0];
+        $profile2 = $this->profiles[1];
+        $date = new DateTime("now", new DateTimeZone("UTC"));
+
+        // create one listen for each track
+        $listen1 = $this->createListen($date, $profile1, $track1->getArtist(), $track1->getAlbum(), $track1);
+        $listen2 = $this->createListen($date, $profile2, $track2->getArtist(), $track2->getAlbum(), $track2);
+
+        // filter listens by track1
+        $qb = $this->getQB()->select("l.id")->filterByTrack($track1);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(1, $rows);
+        $this->assertEquals($rows[0], $listen1->getId());
+
+        // filter listens by track2
+        $qb = $this->getQB()->select("l.id")->filterByTrack($track2);
         $rows = $qb->fetchFirstColumn();
 
         $this->assertCount(1, $rows);
