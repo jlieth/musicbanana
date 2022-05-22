@@ -170,15 +170,15 @@ class ListenQueryBuilderTest extends BaseDbTest {
         $this->assertEquals($rows[0]["id"], $listen2->getId());
     }
 
+    /**
+     * Tests App\QueryBuilder\ListenQueryBuilder::public
+     *
+     * Create two listens, one for a private profile and one for a public
+     * profile. Filtering by public should only return the listen on the
+     * public profile.
+     */
     public function testPublic(): void
     {
-        /*
-         * Tests App\QueryBuilder\ListenQueryBuilder::public
-         *
-         * Create two listens, one for a private profile and one for a public
-         * profile. Filtering by public should only return the listen on the
-         * public profile.
-         */
         $profile1 = $this->profiles[0];
         $profile2 = $this->profiles[1];
 
