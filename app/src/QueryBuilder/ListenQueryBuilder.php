@@ -4,10 +4,33 @@ declare(strict_types=1);
 
 namespace App\QueryBuilder;
 
+use DateTime;
+use DateTimeImmutable;
+use DateTimeZone;
 use App\Entity\User;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 
 class ListenQueryBuilder extends BaseQueryBuilder {
+
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function daterange(DateTime $start, ?DateTime $end = null): static
+    {
+        // set end time to now if no end was given
+        $end = $end ?? new DateTime("now", new DateTimeZone("UTC"));
+
+        // make immutable
+        $start = DateTimeImmutable::createFromMutable($start);
+        $end = DateTimeImmutable::createFromMutable($end);
+
+        $this->andWhere("l.date BETWEEN :_start AND :_end");
+        $this->setParameter("_start", $start, Types::DATETIME_IMMUTABLE);
+        $this->setParameter("_end", $end, Types::DATETIME_IMMUTABLE);
+        return $this;
+    }
+
     public function filterByUser(User $user): static
     {
         // get all profile ids belonging to this user

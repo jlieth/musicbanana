@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\QueryBuilder;
 
+use DateInterval;
 use DateTime;
 use DateTimeZone;
 use App\Entity\{Album, Artist, Listen, Profile, Track, User};
@@ -59,6 +60,78 @@ class ListenQueryBuilderTest extends BaseDbTest {
         $qb = new ListenQueryBuilder($this->conn);
         $qb->from($tableName, "l");
         return $qb;
+    }
+
+    /**
+     * Tests App\QueryBuilder\ListenQueryBuilder::daterange
+     *
+     * daterange() takes two arguments: $start and $end of the requested
+     * range. $end is optional; if no end datetime is given, it is set to
+     * now.
+     *
+     * For a listen with a given date, three cases are possible:
+     * - the date is before $start, so it falls out of range
+     * - the date is between $start and $end, so it is within range
+     * - the date is after $end, so it falls out of range
+     *
+     * To test this function, create four listens with the following dates:
+     * - listen1: four days ago
+     * - listen2: two days ago
+     * - listen3: now
+     * - listen4: tomorrow
+     *
+     * Set the range end points:
+     * - $start: three days ago
+     * - $end: yesterday
+     *
+     * Expected results:
+     * - with no $end given, listen2 and listen3 should be returned
+     * - with $end given, only listen2 should be returned
+     */
+    public function testDaterange(): void
+    {
+        $utc = new DateTimeZone("UTC");
+
+        // profile and track info don't matter
+        $profile = $this->profiles[0];
+        $track = $this->tracks[0];
+
+        // create listens
+        $date1 = (new DateTime("now", $utc))->sub(new DateInterval("P4D"));
+        $listen1 = $this->createListen($date1, $profile, $track->getArtist(), $track->getAlbum(), $track);
+
+        $date2 = (new DateTime("now", $utc))->sub(new DateInterval("P2D"));
+        $listen2 = $this->createListen($date2, $profile, $track->getArtist(), $track->getAlbum(), $track);
+
+        $date3 = new DateTime("now", $utc);
+        $listen3 = $this->createListen($date3, $profile, $track->getArtist(), $track->getAlbum(), $track);
+
+        $date4 = (new DateTime("now", $utc))->add(new DateInterval("P1D"));
+        $listen4 = $this->createListen($date4, $profile, $track->getArtist(), $track->getAlbum(), $track);
+
+        // create range end points
+        $start = (new DateTime("now", $utc))->sub(new DateInterval("P3D"));
+        $end = (new DateTime("now", $utc))->sub(new DateInterval("P1D"));
+
+        // filter without giving $end
+        $qb = $this->getQB()->select("l.id")->daterange($start);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(2, $rows);
+        $this->assertEquals($rows[0], $listen2->getId());
+        $this->assertEquals($rows[1], $listen3->getId());
+        $this->assertNotTrue(in_array($listen1->getId(), $rows));
+        $this->assertNotTrue(in_array($listen4->getId(), $rows));
+
+        // filter with giving $end
+        $qb = $this->getQB()->select("l.id")->daterange($start, $end);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(1, $rows);
+        $this->assertEquals($rows[0], $listen2->getId());
+        $this->assertNotTrue(in_array($listen1->getId(), $rows));
+        $this->assertNotTrue(in_array($listen3->getId(), $rows));
+        $this->assertNotTrue(in_array($listen4->getId(), $rows));
     }
 
     /**
