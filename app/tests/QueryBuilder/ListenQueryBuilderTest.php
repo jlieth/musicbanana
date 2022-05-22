@@ -243,6 +243,42 @@ class ListenQueryBuilderTest extends BaseDbTest {
     }
 
     /**
+     * Tests App\QueryBuilder\ListenQueryBuilder::filterByAlbum
+     *
+     * Create two listens, one with album1 and another with album2.
+     * Filter listens by album1; only the first listen should be returned.
+     * Filter listens by album1; only the second listen should be returned.
+     */
+    public function testFilterByAlbum(): void
+    {
+        $album1 = $this->albums[0];
+        $album2 = $this->albums[1];
+
+        // profile and date don't matter, but must be different for different listens
+        $profile1 = $this->profiles[0];
+        $profile2 = $this->profiles[1];
+        $date = new DateTime("now", new DateTimeZone("UTC"));
+
+        // create one listen for each album
+        $listen1 = $this->createListen($date, $profile1, $album1->getArtist(), $album1, $album1->getTracks()[0]);
+        $listen2 = $this->createListen($date, $profile2, $album2->getArtist(), $album2, $album2->getTracks()[0]);
+
+        // filter listens by album1
+        $qb = $this->getQB()->select("l.id")->filterByAlbum($album1);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(1, $rows);
+        $this->assertEquals($rows[0], $listen1->getId());
+
+        // filter listens by album2
+        $qb = $this->getQB()->select("l.id")->filterByAlbum($album2);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(1, $rows);
+        $this->assertEquals($rows[0], $listen2->getId());
+    }
+
+    /**
      * Tests App\QueryBuilder\ListenQueryBuilder::public
      *
      * Create two listens, one for a private profile and one for a public
