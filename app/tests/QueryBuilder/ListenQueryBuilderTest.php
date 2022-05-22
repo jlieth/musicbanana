@@ -187,19 +187,55 @@ class ListenQueryBuilderTest extends BaseDbTest {
         $track = $this->tracks[0];
         $date = new DateTime("now", new DateTimeZone("UTC"));
 
-        // create one listen for each user
+        // create one listen for each profile
         $listen1 = $this->createListen($date, $profile1, $track->getArtist(), $track->getAlbum(), $track);
         $listen2 = $this->createListen($date, $profile2, $track->getArtist(), $track->getAlbum(), $track);
 
-        // filter listens by user alice
+        // filter listens by profile1
         $qb = $this->getQB()->select("l.id")->filterByProfile($profile1);
         $rows = $qb->fetchFirstColumn();
 
         $this->assertCount(1, $rows);
         $this->assertEquals($rows[0], $listen1->getId());
 
-        // filter listens by user bob
+        // filter listens by profile2
         $qb = $this->getQB()->select("l.id")->filterByProfile($profile2);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(1, $rows);
+        $this->assertEquals($rows[0], $listen2->getId());
+    }
+
+    /**
+     * Tests App\QueryBuilder\ListenQueryBuilder::filterByArtist
+     *
+     * Create two listens, one with artist1 and another with artist2.
+     * Filter listens by artist1; only the first listen should be returned.
+     * Filter listens by artist2; only the second listen should be returned.
+     */
+    public function testFilterByArtist(): void
+    {
+        $artist1 = $this->artists[0];
+        $artist2 = $this->artists[1];
+
+        // profile and date don't matter, but must be different for different listens
+        $profile1 = $this->profiles[0];
+        $profile2 = $this->profiles[1];
+        $date = new DateTime("now", new DateTimeZone("UTC"));
+
+        // create one listen for each artist
+        $listen1 = $this->createListen($date, $profile1, $artist1, null, $artist1->getTracks()[0]);
+        $listen2 = $this->createListen($date, $profile2, $artist2, null, $artist2->getTracks()[0]);
+
+        // filter listens by artist1
+        $qb = $this->getQB()->select("l.id")->filterByArtist($artist1);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(1, $rows);
+        $this->assertEquals($rows[0], $listen1->getId());
+
+        // filter listens by artist2
+        $qb = $this->getQB()->select("l.id")->filterByArtist($artist2);
         $rows = $qb->fetchFirstColumn();
 
         $this->assertCount(1, $rows);
