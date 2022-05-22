@@ -10,6 +10,7 @@ use DateTimeZone;
 use App\Entity\{Album, Artist, Profile, Track, User};
 use App\QueryBuilder\ListenQueryBuilder;
 use App\Tests\BaseDbTest;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class ListenQueryBuilderTest extends BaseDbTest {
     /** @var User[] $users */
@@ -60,6 +61,63 @@ class ListenQueryBuilderTest extends BaseDbTest {
         $qb = new ListenQueryBuilder($this->conn);
         $qb->from($tableName, "l");
         return $qb;
+    }
+
+    /**
+     * Tests App\QueryBuilder\ListenQueryBuilder::{year, month, week, day}
+     */
+    public function testYearMonthWeekDay(): void
+    {
+        // year
+        $start = new DateTime("2016-01-01", new DateTimeZone("UTC"));
+        $end = new DateTime("2017-01-01T00:00:00+00:00", new DateTimeZone("UTC"));
+        $mockQB = $this->getDaterangeMock($start, $end);
+
+        /** @var ListenQueryBuilder $mockQB */
+        $mockQB->year($start);
+
+        // month
+        $start = new DateTime("2016-02-01", new DateTimeZone("UTC"));
+        $end = new DateTime("2016-03-01T00:00:00+00:00", new DateTimeZone("UTC"));
+        $mockQB = $this->getDaterangeMock($start, $end);
+
+        /** @var ListenQueryBuilder $mockQB */
+        $mockQB->month($start);
+
+        // week
+        $start = new DateTime("2022-05-09", new DateTimeZone("UTC"));
+        $end = new DateTime("2022-05-16T00:00:00+00:00", new DateTimeZone("UTC"));
+        $mockQB = $this->getDaterangeMock($start, $end);
+
+        /** @var ListenQueryBuilder $mockQB */
+        $mockQB->week($start);
+
+        // day
+        $start = new DateTime("2022-05-09", new DateTimeZone("UTC"));
+        $end = new DateTime("2022-05-10T00:00:00+00:00", new DateTimeZone("UTC"));
+        $mockQB = $this->getDaterangeMock($start, $end);
+
+        /** @var ListenQueryBuilder $mockQB */
+        $mockQB->day($start);
+    }
+
+    private function getDaterangeMock(DateTime $start, DateTime $end): MockObject
+    {
+        // Create a mock for the QueryBuilder class, only mock the daterange() method.
+        $mockQB = $this
+            ->getMockBuilder(ListenQueryBuilder::class)
+            ->setConstructorArgs([$this->conn])
+            ->onlyMethods(["daterange"])
+            ->getMock();
+
+        // Set up the expectation for the daterange() method to be called once
+        // with the expected start and end date
+        $mockQB
+            ->expects($this->once())
+            ->method("daterange")
+            ->with($this->equalTo($start), $this->equalTo($end));
+
+        return $mockQB;
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\QueryBuilder;
 
+use DateInterval;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -12,7 +13,39 @@ use App\Entity\{Album, Artist, Profile, Track, User};
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class ListenQueryBuilder extends BaseQueryBuilder {
+    const TIMESPANS = ["overall", "year", "month", "week", "day"];
+
+    public function year(DateTime $start): static
+    {
+        $end = clone $start;
+        $end->add(new DateInterval("P1Y"));
+        return $this->daterange($start, $end);
+    }
+
+    public function month(DateTime $start): static
+    {
+        $end = clone $start;
+        $end->add(new DateInterval("P1M"));
+        return $this->daterange($start, $end);
+    }
+
+    public function week(DateTime $start): static
+    {
+        $end = clone $start;
+        $end->add(new DateInterval("P7D"));
+        return $this->daterange($start, $end);
+    }
+
+    public function day(DateTime $start): static
+    {
+        $end = clone $start;
+        $end->add(new DateInterval("P1D"));
+        return $this->daterange($start, $end);
+    }
 
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
