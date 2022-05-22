@@ -7,6 +7,7 @@ namespace App\QueryBuilder;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeZone;
+use InvalidArgumentException;
 use App\Entity\{Album, Artist, Profile, Track, User};
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -29,6 +30,17 @@ class ListenQueryBuilder extends BaseQueryBuilder {
         $this->setParameter("_start", $start, Types::DATETIME_IMMUTABLE);
         $this->setParameter("_end", $end, Types::DATETIME_IMMUTABLE);
         return $this;
+    }
+
+    public function filter($obj): static
+    {
+        if ($obj instanceof Album) return $this->filterByAlbum($obj);
+        else if ($obj instanceof Artist) return $this->filterByArtist($obj);
+        else if ($obj instanceof Profile) return $this->filterByProfile($obj);
+        else if ($obj instanceof Track) return $this->filterByTrack($obj);
+        else if ($obj instanceof User) return $this->filterByUser($obj);
+
+        throw new InvalidArgumentException("filtering is only supported for certain entity instances");
     }
 
     public function filterByUser(User $user): static
