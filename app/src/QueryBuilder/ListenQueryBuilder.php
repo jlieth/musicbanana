@@ -17,8 +17,6 @@ use Doctrine\DBAL\Types\Types;
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class ListenQueryBuilder extends BaseQueryBuilder {
-    const TIMESPANS = ["overall", "year", "month", "week", "day"];
-
     public function year(DateTime $start): static
     {
         $end = clone $start;
