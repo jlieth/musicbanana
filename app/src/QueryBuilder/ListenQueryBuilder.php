@@ -7,7 +7,7 @@ namespace App\QueryBuilder;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeZone;
-use App\Entity\User;
+use App\Entity\{Profile, User};
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
@@ -41,6 +41,13 @@ class ListenQueryBuilder extends BaseQueryBuilder {
 
         $this->andWhere("l.profile_id IN (:profiles)");
         $this->setParameter("profiles", $profileIds, Connection::PARAM_INT_ARRAY);
+        return $this;
+    }
+
+    public function filterByProfile(Profile $profile): static
+    {
+        $this->andWhere("l.profile_id = :profile");
+        $this->setParameter("profile", $profile->getId());
         return $this;
     }
 

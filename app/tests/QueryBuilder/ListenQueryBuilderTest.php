@@ -171,6 +171,42 @@ class ListenQueryBuilderTest extends BaseDbTest {
     }
 
     /**
+     * Tests App\QueryBuilder\ListenQueryBuilder::filterByProfile
+     *
+     * Create two listens, one belonging to profile1 and another belonging to
+     * profile2.
+     * Filter listens by profile1; only the first listen should be returned.
+     * Filter listens by profile2; only the second listen should be returned.
+     */
+    public function testFilterByProfile(): void
+    {
+        $profile1 = $this->profiles[0];
+        $profile2 = $this->profiles[1];
+
+        // track and date can be anything
+        $track = $this->tracks[0];
+        $date = new DateTime("now", new DateTimeZone("UTC"));
+
+        // create one listen for each user
+        $listen1 = $this->createListen($date, $profile1, $track->getArtist(), $track->getAlbum(), $track);
+        $listen2 = $this->createListen($date, $profile2, $track->getArtist(), $track->getAlbum(), $track);
+
+        // filter listens by user alice
+        $qb = $this->getQB()->select("l.id")->filterByProfile($profile1);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(1, $rows);
+        $this->assertEquals($rows[0], $listen1->getId());
+
+        // filter listens by user bob
+        $qb = $this->getQB()->select("l.id")->filterByProfile($profile2);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(1, $rows);
+        $this->assertEquals($rows[0], $listen2->getId());
+    }
+
+    /**
      * Tests App\QueryBuilder\ListenQueryBuilder::public
      *
      * Create two listens, one for a private profile and one for a public
