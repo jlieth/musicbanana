@@ -61,16 +61,16 @@ class ListenQueryBuilderTest extends BaseDbTest {
         return $qb;
     }
 
+    /**
+     * Tests App\QueryBuilder\ListenQueryBuilder::filterByUser
+     *
+     * Create two listens, one belonging to a profile of user Alice and
+     * another belonging to a profile of user Bob. Filter listens by user
+     * Alice; only the first listen should be returned. Filter listens by
+     * user Bob; only the second listen should be returned.
+     */
     public function testFilterByUser(): void
     {
-        /*
-         * Tests App\QueryBuilder\ListenQueryBuilder::filterByUser
-         *
-         * Create two listens, one belonging to a profile of user Alice and
-         * another belonging to a profile of user Bob. Filter listens by user
-         * Alice; only the first listen should be returned. Filter listens by
-         * user Bob; only the second listen should be returned.
-         */
         $alice = $this->users[0];
         $bob = $this->users[1];
 
