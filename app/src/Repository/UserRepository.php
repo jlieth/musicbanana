@@ -43,10 +43,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     private function listenQB($alias = "l"): ListenQueryBuilder {
-        $listensTable = $this->_em->getClassMetadata("App:Listen")->getTableName();
-        $qb = new ListenQueryBuilder($this->connection);
-        $qb->from($listensTable, $alias);
-        return $qb;
+        return new ListenQueryBuilder($this->connection, $alias);
     }
 
     public function getListens(User $user, int $page = 1): ListenQueryBuilder {
