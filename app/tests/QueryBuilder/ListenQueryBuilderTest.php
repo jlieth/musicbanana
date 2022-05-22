@@ -33,7 +33,7 @@ class ListenQueryBuilderTest extends BaseDbTest {
 
         // create profiles for users
         $this->profiles[] = $this->createProfile("default", $alice);
-        $this->profiles[] = $this->createProfile("secret", $alice, true);
+        $this->profiles[] = $this->createProfile("secret", $alice, false);
         $this->profiles[] = $this->createProfile("default", $bob);
 
         // create artists
@@ -88,6 +88,39 @@ class ListenQueryBuilderTest extends BaseDbTest {
 
         $this->assertCount(1, $rows);
         $this->assertEquals($rows[0]["id"], $listen2->getId());
+    }
+
+    public function testPublic(): void
+    {
+        /*
+         * Tests App\QueryBuilder\ListenQueryBuilder::public
+         *
+         * Create two listens, one for a private profile and one for a public
+         * profile. Filtering by public should only return the listen on the
+         * public profile.
+         */
+        $profile1 = $this->profiles[0];
+        $profile2 = $this->profiles[1];
+
+        // Assert that we have a public and a private profile
+        $this->assertTrue($profile1->getIsPublic());
+        $this->assertFalse($profile2->getIsPublic());
+
+        // track and date can be anything
+        $track = $this->tracks[0];
+        $date = new DateTime("now", new DateTimeZone("UTC"));
+
+        // create one listen for each profile
+        $listen1 = $this->createListen($date, $profile1, $track->getArtist(), $track->getAlbum(), $track);
+        $listen2 = $this->createListen($date, $profile2, $track->getArtist(), $track->getAlbum(), $track);
+
+        // filter listens by public
+        $qb = $this->getQB()->select("l.id")->public();
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(1, $rows);
+        $this->assertEquals($rows[0], $listen1->getId());
+        $this->assertNotTrue(in_array($listen2->getId(), $rows));
     }
 
 }
