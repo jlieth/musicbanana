@@ -17,7 +17,7 @@ use Doctrine\DBAL\Types\Types;
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class ListenQueryBuilder extends BaseQueryBuilder {
-    private String $alias;
+    protected String $alias;
 
     public function __construct(Connection $conn, String $alias = "l")
     {
