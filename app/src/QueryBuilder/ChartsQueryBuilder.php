@@ -23,7 +23,8 @@ class ChartsQueryBuilder extends ListenQueryBuilder {
                 "COUNT(*) AS count"
             )
             ->groupBy("$otherAlias.name")
-            ->orderBy("count", "DESC");
+            ->orderBy("count", "DESC")
+            ->addOrderBy("artist_name", "ASC");
 
         return $this;
     }
