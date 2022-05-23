@@ -77,4 +77,22 @@ class ChartsQueryBuilderTest extends BaseDbTest {
 
         $this->assertEquals($result, $expected);
     }
+
+    public function testAlbums(): void
+    {
+        $result = $this->getQB()->albums()->fetchAllAssociative();
+        $expected = [
+            ["artist_name" => "Gale Ventura", "album_title" => "Cloud nine", "count" => 24],
+            ["artist_name" => "Harm", "album_title" => "Patient zero", "count" => 18],
+            ["artist_name" => "Harm", "album_title" => "Emergency", "count" => 14],
+            ["artist_name" => "Pool", "album_title" => "Midnight oil", "count" => 6],
+            ["artist_name" => "Harm", "album_title" => "Doctor in the house", "count" => 2],
+            ["artist_name" => "Becky Leo", "album_title" => "Cobweb of lies", "count" => 1],
+            ["artist_name" => "Harm", "album_title" => "Methodical madness", "count" => 1],
+            ["artist_name" => "Harm", "album_title" => "No medical history", "count" => 1],
+            ["artist_name" => "Pool", "album_title" => "The last laugh", "count" => 1],
+        ];
+
+        $this->assertEquals($result, $expected);
+    }
 }
