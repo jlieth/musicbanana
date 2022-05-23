@@ -63,4 +63,38 @@ class ChartsQueryBuilder extends ListenQueryBuilder {
 
             return $this;
     }
+
+    public function tracks(): static
+    {
+        $alias = $this->alias;
+        $artistTable = self::TABLE_NAMES["artist"];
+        $trackTable = self::TABLE_NAMES["track"];
+
+        // join artist table if not yet joined
+        $isJoined = in_array($artistTable, array_keys($this->joins));
+        if (!$isJoined) {
+            $this->innerJoin($alias, $artistTable, "a", "$alias.artist_id = a.id");
+        }
+
+        // join track table if not yet joined
+        $isJoined = in_array($trackTable, array_keys($this->joins));
+        if (!$isJoined) {
+            $this->innerJoin($alias, $trackTable, "t", "$alias.track_id = t.id");
+        }
+
+        $artistAlias = $this->joins[$artistTable];
+        $trackAlias = $this->joins[$trackTable];
+        $this->
+            select(
+                "$artistAlias.name AS artist_name",
+                "$trackAlias.title AS track_title",
+                "COUNT(*) AS count"
+            )
+            ->groupBy("artist_name", "track_title")
+            ->orderBy("count", "DESC")
+            ->addOrderBy("artist_name", "ASC")
+            ->addOrderBy("track_title", "ASC");
+
+            return $this;
+    }
 }

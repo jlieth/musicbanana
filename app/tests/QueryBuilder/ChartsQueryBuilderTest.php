@@ -64,9 +64,7 @@ class ChartsQueryBuilderTest extends BaseDbTest {
 
     public function testArtists(): void
     {
-        $qb = $this->getQB();
-        $result = $qb->artists()->fetchAllAssociative();
-
+        $result = $this->getQB()->artists()->fetchAllAssociative();
         $expected = [
             ["artist_name" => "Harm", "count" => 36],
             ["artist_name" => "Gale Ventura", "count" => 24],
@@ -94,5 +92,30 @@ class ChartsQueryBuilderTest extends BaseDbTest {
         ];
 
         $this->assertEquals($result, $expected);
+    }
+
+    public function testTracks(): void
+    {
+        $result = $this->getQB()->tracks()->fetchAllAssociative();
+        $expected = [
+            ["artist_name" => "Harm", "track_title" => "You're Everything To Me", "count" => 18],
+            ["artist_name" => "Gale Ventura", "track_title" => "Haze Of My Shadows", "count" => 13],
+            ["artist_name" => "Harm", "track_title" => "Change Of Wasted Time", "count" => 13],
+            ["artist_name" => "Gale Ventura", "track_title" => "Sense For A Lost Soul", "count" => 11],
+            ["artist_name" => "Becky Leo", "track_title" => "Heartbeat And Angel", "count" => 10],
+            ["artist_name" => "Pool", "track_title" => "Remember Your Steps", "count" => 6],
+            ["artist_name" => "Morris Michaels", "track_title" => "DJ, I'm Sorry", "count" => 3],
+            ["artist_name" => "Harm", "track_title" => "Hold Me Tonight", "count" => 2],
+            ["artist_name" => "Harm", "track_title" => "Things Of Fire And Smoke", "count" => 2],
+            ["artist_name" => "Harm", "track_title" => "Sound Of Us", "count" => 1],
+            ["artist_name" => "Pool", "track_title" => "Lightning And Nightmare", "count" => 1],
+        ];
+
+        $this->assertEquals($result, $expected);
+
+        // test paginating just for fun
+        $result = $this->getQB()->tracks()->page(2)->fetchAllAssociative();
+        $this->assertCount(1, $result);
+        $this->assertEquals($result[0], $expected[10]);
     }
 }
