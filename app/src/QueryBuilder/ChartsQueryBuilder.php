@@ -13,7 +13,7 @@ class ChartsQueryBuilder extends ListenQueryBuilder {
         // join artist table if not yet joined
         $isJoined = in_array($artistTable, array_keys($this->joins));
         if (!$isJoined) {
-            $this->innerJoin($alias, $artistTable, "a", "$alias.profile_id = p.id");
+            $this->innerJoin($alias, $artistTable, "a", "$alias.artist_id = a.id");
         }
 
         $otherAlias = $this->joins[$artistTable];
