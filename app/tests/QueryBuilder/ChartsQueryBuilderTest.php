@@ -62,17 +62,17 @@ class ChartsQueryBuilderTest extends BaseDbTest {
         return new ChartsQueryBuilder($this->conn);
     }
 
-    public function testArtist(): void
+    public function testArtists(): void
     {
         $qb = $this->getQB();
         $result = $qb->artists()->fetchAllAssociative();
 
         $expected = [
-            ["artist_name" => "Harm", "count" => "36"],
-            ["artist_name" => "Gale Ventura", "count" => "24"],
-            ["artist_name" => "Becky Leo", "count" => "10"],
-            ["artist_name" => "Pool", "count" => "7"],
-            ["artist_name" => "Morris Michaels", "count" => "3"],
+            ["artist_name" => "Harm", "count" => 36],
+            ["artist_name" => "Gale Ventura", "count" => 24],
+            ["artist_name" => "Becky Leo", "count" => 10],
+            ["artist_name" => "Pool", "count" => 7],
+            ["artist_name" => "Morris Michaels", "count" => 3],
         ];
 
         $this->assertEquals($result, $expected);
