@@ -9,6 +9,8 @@ namespace App\Controller;
 use RuntimeException;
 use App\Controller\Traits\DefaultProps;
 use App\Entity\User;
+use App\QueryBuilder\ListenQueryBuilder;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Rompetomp\InertiaBundle\Service\InertiaInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,17 +26,20 @@ abstract class BaseController extends AbstractController
     protected EntityManagerInterface $em;
     protected RequestStack $requestStack;
     protected CsrfTokenManagerInterface $tokenManager;
+    protected Connection $connection;
     protected InertiaInterface $inertia;
     protected ValidatorInterface $validator;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         RequestStack $requestStack,
-        CsrfTokenManagerInterface $tokenManager
+        CsrfTokenManagerInterface $tokenManager,
+        Connection $connection,
     ) {
         $this->em = $entityManager;
         $this->requestStack = $requestStack;
         $this->tokenManager = $tokenManager;
+        $this->connection = $connection;
     }
 
     /**
@@ -51,6 +56,11 @@ abstract class BaseController extends AbstractController
     public function setValidator(ValidatorInterface $validator): void
     {
         $this->validator = $validator;
+    }
+
+    protected function getListenQueryBuilder(): ListenQueryBuilder
+    {
+        return new ListenQueryBuilder($this->connection);
     }
 
     /**
