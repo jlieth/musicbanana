@@ -3,9 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use App\QueryBuilder\ListenQueryBuilder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -20,12 +18,10 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     const ITEMS_PER_PAGE = 10;
-    private Connection $connection;
 
-    public function __construct(ManagerRegistry $registry, Connection $connection)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
-        $this->connection = $connection;
     }
 
     /**
@@ -40,29 +36,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newHashedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
-    }
-
-    private function listenQB($alias = "l"): ListenQueryBuilder {
-        return new ListenQueryBuilder($this->connection, $alias);
-    }
-
-    public function getListens(User $user, int $page = 1): ListenQueryBuilder {
-        $qb = $this->listenQB("l")
-            ->select(
-                "l.date AS timestamp",
-                "p.name AS profile_name",
-                "p.is_public AS public",
-                "a.name AS artist",
-                "t.title AS track"
-            )
-            ->innerJoin("l", "Profile", "p", "l.profile_id = p.id")
-            ->innerJoin("l", "Artist", "a", "l.artist_id = a.id")
-            ->innerJoin("l", "Track", "t", "l.track_id = t.id")
-            ->orderBy("l.date", "DESC")
-            ->filterByUser($user)
-            ->page($page);
-
-        return $qb;
     }
 
     // /**

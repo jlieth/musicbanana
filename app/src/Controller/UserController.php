@@ -28,7 +28,12 @@ class UserController extends BaseController
         $publicOnly = ($user !== $profileUser);
 
         // get recent tracks
-        $recentTracks = $userRepository->getListens($profileUser);
+        $recentTracks = $this
+            ->getListenQueryBuilder()
+            ->filterByUser($profileUser)
+            ->all()
+            ->page(1);
+
         if ($publicOnly) {
             $recentTracks->public();
         }

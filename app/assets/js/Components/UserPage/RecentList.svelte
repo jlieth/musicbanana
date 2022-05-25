@@ -24,8 +24,8 @@
             {/if}
         </div>
         <div class="info">
-            <a class="track" href="/">{item.track}</a>
-            <a class="artist" href="/">{item.artist}</a>
+            <a class="track" href="/">{item.track_title}</a>
+            <a class="artist" href="/">{item.artist_name}</a>
             <span class="timestamp" title="{item.timestamp}">
                 {timeAgo.format(new Date(item.timestamp))}
             </span>
