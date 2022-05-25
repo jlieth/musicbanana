@@ -7,7 +7,7 @@ namespace App\Tests\QueryBuilder;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
-use App\Entity\{Album, Artist, Profile, Track, User};
+use App\Entity\{Album, Artist, Listen, Profile, Track, User};
 use App\QueryBuilder\ListenQueryBuilder;
 use App\Tests\BaseDbTest;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -58,6 +58,70 @@ class ListenQueryBuilderTest extends BaseDbTest {
     private function getQB(): ListenQueryBuilder
     {
         return new ListenQueryBuilder($this->conn);
+    }
+
+    /** Tests App\QueryBuilder\ListenQueryBuilder::all */
+    public function testAll(): void
+    {
+        // load test data
+        /** @var \App\Repository\ListenRepository $repo */
+        $repo = $this->em->getRepository(Listen::class);
+
+        $file = __DIR__ . "/../data/charts_testdata.tsv";
+        $data = explode("\n", file_get_contents($file));
+        foreach ($data as $line) {
+            $line = explode("\t", $line);
+            if (count($line) !== 4) continue;
+
+            list($artist, $track, $album, $ts) = $line;
+            $date = new DateTime($ts, new DateTimeZone("UTC"));
+
+            // assign profiles
+            switch ($artist) {
+                case "Harm":
+                    $profile = $this->profiles[0];
+                    break;
+                case "Gale Ventura":
+                    $profile = $this->profiles[1];
+                    break;
+                default:
+                    $profile = $this->profiles[2];
+            }
+
+            $defaults = [
+                "artistName" => $artist,
+                "artistMbid" => null,
+                "albumTitle" => $album ?? null,
+                "albumMbid" => null,
+                "albumArtistName" => $artist,
+                "albumArtistMbid" => null,
+                "trackTitle" => $track,
+                "tracknumber" => 0,
+                "length" => 0,
+                "trackMbid" => null,
+            ];
+
+            $repo->getOrCreate($profile, $date, $defaults);
+        }
+
+        $result = $this->getQB()->all()->fetchAllAssociative();
+        $this->assertCount(80, $result);
+
+        $result = $this->getQB()->all()->page(7)->fetchAllAssociative();
+        $this->assertCount(10, $result);
+        $expected = [
+            ["timestamp" => "2010-07-06 00:32:00+00", "user_name" => "Bob", "profile_name" => "default", "public" => true, "artist_name" => "Pool", "album_title" => "Midnight oil", "album_artist_name" => "Pool", "track_title" => "Remember Your Steps"],
+            ["timestamp" => "2010-07-05 00:44:00+00", "user_name" => "Alice", "profile_name" => "default", "public" => true, "artist_name" => "Harm", "album_title" => "Patient zero", "album_artist_name" => "Harm", "track_title" => "You're Everything To Me"],
+            ["timestamp" => "2010-07-05 00:40:00+00", "user_name" => "Bob", "profile_name" => "default", "public" => true, "artist_name" => "Morris Michaels", "album_title" => null, "album_artist_name" => null, "track_title" => "DJ, I'm Sorry"],
+            ["timestamp" => "2010-07-02 18:48:00+00", "user_name" => "Bob", "profile_name" => "default", "public" => true, "artist_name" => "Becky Leo", "album_title" => null, "album_artist_name" => null, "track_title" => "Heartbeat And Angel"],
+            ["timestamp" => "2010-05-09 05:01:00+00", "user_name" => "Alice", "profile_name" => "secret", "public" => false, "artist_name" => "Gale Ventura", "album_title" => "Cloud nine", "album_artist_name" => "Gale Ventura", "track_title" => "Haze Of My Shadows"],
+            ["timestamp" => "2010-05-09 04:57:00+00", "user_name" => "Alice", "profile_name" => "secret", "public" => false, "artist_name" => "Gale Ventura", "album_title" => "Cloud nine", "album_artist_name" => "Gale Ventura", "track_title" => "Sense For A Lost Soul"],
+            ["timestamp" => "2010-03-31 01:22:00+00", "user_name" => "Bob", "profile_name" => "default", "public" => true, "artist_name" => "Becky Leo", "album_title" => null, "album_artist_name" => null, "track_title" => "Heartbeat And Angel"],
+            ["timestamp" => "2010-03-31 01:13:00+00", "user_name" => "Bob", "profile_name" => "default", "public" => true, "artist_name" => "Becky Leo", "album_title" => null, "album_artist_name" => null, "track_title" => "Heartbeat And Angel"],
+            ["timestamp" => "2010-03-31 01:06:00+00", "user_name" => "Bob", "profile_name" => "default", "public" => true, "artist_name" => "Becky Leo", "album_title" => null, "album_artist_name" => null, "track_title" => "Heartbeat And Angel"],
+            ["timestamp" => "2010-03-26 05:48:00+00", "user_name" => "Bob", "profile_name" => "default", "public" => true, "artist_name" => "Becky Leo", "album_title" => null, "album_artist_name" => null, "track_title" => "Heartbeat And Angel"],
+        ];
+        $this->assertEquals($expected, $result);
     }
 
     /**

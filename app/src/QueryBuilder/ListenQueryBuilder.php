@@ -29,6 +29,36 @@ class ListenQueryBuilder extends BaseQueryBuilder {
         $this->from($tableName, $this->alias);
     }
 
+    public function all(): static
+    {
+        $this
+            ->joinUserTable()
+            ->joinProfileTable()
+            ->joinArtistTable()
+            ->joinAlbumTable()
+            ->joinAlbumArtistTable()
+            ->joinTrackTable();
+
+        $alias = $this->alias;
+        $userAlias = $this->joins[self::TABLE_NAMES["user"]];
+        $profileAlias = $this->joins[self::TABLE_NAMES["profile"]];
+        $artistAlias = $this->joins[self::TABLE_NAMES["artist"]];
+        $albumAlias = $this->joins[self::TABLE_NAMES["album"]];
+        $trackAlias = $this->joins[self::TABLE_NAMES["track"]];
+        $albumArtistAlias = $this->joins["AlbumArtist"];
+
+        return $this->select(
+            "$alias.date AS timestamp",
+            "$userAlias.name as user_name",
+            "$profileAlias.name AS profile_name",
+            "$profileAlias.is_public AS public",
+            "$artistAlias.name AS artist_name",
+            "$albumAlias.title AS album_title",
+            "$albumArtistAlias.name AS album_artist_name",
+            "$trackAlias.title AS track_title"
+        )->orderBy("timestamp", "DESC");
+    }
+
     public function year(DateTime $start): static
     {
         $end = clone $start;
@@ -147,6 +177,110 @@ class ListenQueryBuilder extends BaseQueryBuilder {
         $otherAlias = $this->joins[$profileTable];
         $this->andWhere("$otherAlias.is_public = :_public");
         $this->setParameter("_public", true);
+        return $this;
+    }
+
+    protected function joinUserTable(): static
+    {
+        $alias = $this->alias;
+        $userTable = self::TABLE_NAMES["user"];
+        $profileTable = self::TABLE_NAMES["profile"];
+
+        // join user table if not yet joined
+        $isJoined = in_array($userTable, array_keys($this->joins));
+        if (!$isJoined) {
+            // profile table needs to be joined
+            $this->joinProfileTable();
+            $profileAlias = $this->joins[$profileTable];
+            $this->innerJoin($alias, $userTable, "u", "$profileAlias.user_id = u.id");
+        }
+
+        return $this;
+    }
+
+    protected function joinProfileTable(): static
+    {
+        $alias = $this->alias;
+        $profileTable = self::TABLE_NAMES["profile"];
+
+        // join profile table if not yet joined
+        $isJoined = in_array($profileTable, array_keys($this->joins));
+        if (!$isJoined) {
+            $this->innerJoin($alias, $profileTable, "p", "$alias.profile_id = p.id");
+        }
+
+        return $this;
+    }
+
+    protected function joinArtistTable(): static
+    {
+        $alias = $this->alias;
+        $artistTable = self::TABLE_NAMES["artist"];
+
+        // join artist table if not yet joined
+        $isJoined = in_array($artistTable, array_keys($this->joins));
+        if (!$isJoined) {
+            $this->innerJoin($alias, $artistTable, "a", "$alias.artist_id = a.id");
+        }
+
+        return $this;
+    }
+
+    protected function joinAlbumTable(): static
+    {
+        $alias = $this->alias;
+        $albumTable = self::TABLE_NAMES["album"];
+
+        // album might not exist, so we're left-joining the album table
+        $isJoined = in_array($albumTable, array_keys($this->joins));
+        if (!$isJoined) {
+            $this->leftJoin($alias, $albumTable, "al", "$alias.album_id = al.id");
+            $this->joins[$albumTable] = "al";
+        }
+
+        return $this;
+    }
+
+    protected function joinAlbumArtistTable(): static
+    {
+        $alias = $this->alias;
+        $artistTable = self::TABLE_NAMES["artist"];
+        $albumTable = self::TABLE_NAMES["album"];
+
+        // join album artist (artist table with a different alias)
+        $isJoined = in_array("AlbumArtist", array_keys($this->joins));
+        if (!$isJoined) {
+            // preserve alias of artist table join, if any
+            $artistAlias = $this->joins[$artistTable];
+
+            // join album table
+            $this->joinAlbumTable();
+            $albumAlias = $this->joins[$albumTable];
+
+            // left join for album artist with alias aa
+            $this->leftJoin($alias, $artistTable, "aa", "$albumAlias.artist_id = aa.id");
+
+            // save alias for album artist "table"
+            $this->joins["AlbumArtist"] = "aa";
+
+            // set real alias for artist table again
+            $this->joins[$artistTable] = $artistAlias;
+        }
+
+        return $this;
+    }
+
+    protected function joinTrackTable(): static
+    {
+        $alias = $this->alias;
+        $trackTable = self::TABLE_NAMES["track"];
+
+        // join track table if not yet joined
+        $isJoined = in_array($trackTable, array_keys($this->joins));
+        if (!$isJoined) {
+            $this->innerJoin($alias, $trackTable, "t", "$alias.track_id = t.id");
+        }
+
         return $this;
     }
 }
