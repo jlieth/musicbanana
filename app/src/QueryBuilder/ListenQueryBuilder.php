@@ -165,17 +165,9 @@ class ListenQueryBuilder extends BaseQueryBuilder {
 
     public function public(): static
     {
-        $alias = $this->alias;
-        $profileTable = self::TABLE_NAMES["profile"];
-
-        // join profile table if not yet joined
-        $isJoined = in_array($profileTable, array_keys($this->joins));
-        if (!$isJoined) {
-            $this->innerJoin($alias, $profileTable, "p", "$alias.profile_id = p.id");
-        }
-
-        $otherAlias = $this->joins[$profileTable];
-        $this->andWhere("$otherAlias.is_public = :_public");
+        $this->joinProfileTable();
+        $profileAlias = $this->joins[self::TABLE_NAMES["profile"]];
+        $this->andWhere("$profileAlias.is_public = :_public");
         $this->setParameter("_public", true);
         return $this;
     }
@@ -251,7 +243,7 @@ class ListenQueryBuilder extends BaseQueryBuilder {
         $isJoined = in_array("AlbumArtist", array_keys($this->joins));
         if (!$isJoined) {
             // preserve alias of artist table join, if any
-            $artistAlias = $this->joins[$artistTable];
+            $artistAlias = $this->joins[$artistTable] ?? null;
 
             // join album table
             $this->joinAlbumTable();
@@ -265,6 +257,9 @@ class ListenQueryBuilder extends BaseQueryBuilder {
 
             // set real alias for artist table again
             $this->joins[$artistTable] = $artistAlias;
+
+            // delete entry in joins if artist alias is null, i.e. the join doesn't exist
+            if ($artistAlias === null) unset($this->joins[$artistTable]);
         }
 
         return $this;

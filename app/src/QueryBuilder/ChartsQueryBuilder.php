@@ -7,51 +7,28 @@ namespace App\QueryBuilder;
 class ChartsQueryBuilder extends ListenQueryBuilder {
     public function artists(): static
     {
-        $alias = $this->alias;
-        $artistTable = self::TABLE_NAMES["artist"];
-
-        // join artist table if not yet joined
-        $isJoined = in_array($artistTable, array_keys($this->joins));
-        if (!$isJoined) {
-            $this->innerJoin($alias, $artistTable, "a", "$alias.artist_id = a.id");
-        }
-
-        $otherAlias = $this->joins[$artistTable];
-        $this
+        $this->joinArtistTable();
+        $artistAlias = $this->joins[self::TABLE_NAMES["artist"]];
+        return $this
             ->select(
-                "$otherAlias.name AS artist_name",
+                "$artistAlias.name AS artist_name",
                 "COUNT(*) AS count"
             )
-            ->groupBy("$otherAlias.name")
+            ->groupBy("$artistAlias.name")
             ->orderBy("count", "DESC")
             ->addOrderBy("artist_name", "ASC");
-
-        return $this;
     }
 
     public function albums(): static
     {
-        $alias = $this->alias;
-        $artistTable = self::TABLE_NAMES["artist"];
-        $albumTable = self::TABLE_NAMES["album"];
+        $this->joinAlbumTable();
+        $this->joinAlbumArtistTable();
 
-        // join artist table if not yet joined
-        $isJoined = in_array($artistTable, array_keys($this->joins));
-        if (!$isJoined) {
-            $this->innerJoin($alias, $artistTable, "a", "$alias.artist_id = a.id");
-        }
-
-        // join album table if not yet joined
-        $isJoined = in_array($albumTable, array_keys($this->joins));
-        if (!$isJoined) {
-            $this->innerJoin($alias, $albumTable, "al", "$alias.album_id = al.id");
-        }
-
-        $artistAlias = $this->joins[$artistTable];
-        $albumAlias = $this->joins[$albumTable];
-        $this->
-            select(
-                "$artistAlias.name AS artist_name",
+        $albumArtistAlias = $this->joins["AlbumArtist"];
+        $albumAlias = $this->joins[self::TABLE_NAMES["album"]];
+        return $this
+            ->select(
+                "$albumArtistAlias.name AS artist_name",
                 "$albumAlias.title AS album_title",
                 "COUNT(*) AS count"
             )
@@ -60,32 +37,17 @@ class ChartsQueryBuilder extends ListenQueryBuilder {
             ->orderBy("count", "DESC")
             ->addOrderBy("artist_name", "ASC")
             ->addOrderBy("album_title", "ASC");
-
-            return $this;
     }
 
     public function tracks(): static
     {
-        $alias = $this->alias;
-        $artistTable = self::TABLE_NAMES["artist"];
-        $trackTable = self::TABLE_NAMES["track"];
+        $this->joinTrackTable();
+        $this->joinArtistTable();
 
-        // join artist table if not yet joined
-        $isJoined = in_array($artistTable, array_keys($this->joins));
-        if (!$isJoined) {
-            $this->innerJoin($alias, $artistTable, "a", "$alias.artist_id = a.id");
-        }
-
-        // join track table if not yet joined
-        $isJoined = in_array($trackTable, array_keys($this->joins));
-        if (!$isJoined) {
-            $this->innerJoin($alias, $trackTable, "t", "$alias.track_id = t.id");
-        }
-
-        $artistAlias = $this->joins[$artistTable];
-        $trackAlias = $this->joins[$trackTable];
-        $this->
-            select(
+        $artistAlias = $this->joins[self::TABLE_NAMES["artist"]];
+        $trackAlias = $this->joins[self::TABLE_NAMES["track"]];
+        return $this
+            ->select(
                 "$artistAlias.name AS artist_name",
                 "$trackAlias.title AS track_title",
                 "COUNT(*) AS count"
@@ -94,7 +56,5 @@ class ChartsQueryBuilder extends ListenQueryBuilder {
             ->orderBy("count", "DESC")
             ->addOrderBy("artist_name", "ASC")
             ->addOrderBy("track_title", "ASC");
-
-            return $this;
     }
 }
