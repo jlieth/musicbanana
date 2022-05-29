@@ -9,7 +9,7 @@ namespace App\Controller;
 use RuntimeException;
 use App\Controller\Traits\DefaultProps;
 use App\Entity\User;
-use App\QueryBuilder\ListenQueryBuilder;
+use App\QueryBuilder\{ChartsQueryBuilder, ListenQueryBuilder};
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Rompetomp\InertiaBundle\Service\InertiaInterface;
@@ -61,6 +61,11 @@ abstract class BaseController extends AbstractController
     protected function getListenQueryBuilder(): ListenQueryBuilder
     {
         return new ListenQueryBuilder($this->connection);
+    }
+
+    protected function getChartsQueryBuilder(): ChartsQueryBuilder
+    {
+        return new ChartsQueryBuilder($this->connection);
     }
 
     /**

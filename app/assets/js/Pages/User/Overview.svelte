@@ -1,6 +1,7 @@
 <script lang="ts">
     import Layout from "@/Layout.svelte"
     import SubHeader from "@/Components/SubHeader/UserPageSubHeader.svelte"
+    import Charts from "@/Components/UserPage/Charts.svelte"
     import RecentList from "@/Components/UserPage/RecentList.svelte"
 </script>
 
@@ -13,6 +14,11 @@
         <section>
             <h3>Recent tracks</h3>
             <RecentList />
+        </section>
+
+        <section>
+            <h3>Top Artists</h3>
+            <Charts chartType="artist" />
         </section>
     </main>
 </Layout>
