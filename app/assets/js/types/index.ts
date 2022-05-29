@@ -1,2 +1,2 @@
 export { RecentTrack } from "./RecentTrack"
-export { ArtistCharts, AlbumCharts, TrackCharts } from "./Charts"
+export { Charts } from "./Charts"

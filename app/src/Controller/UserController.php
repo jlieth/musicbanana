@@ -48,11 +48,19 @@ class UserController extends BaseController
             ->albums()
             ->page(1);
 
+        // get top tracks
+        $topTracks = $this
+            ->getChartsQueryBuilder()
+            ->filterByUser($profileUser)
+            ->tracks()
+            ->page(1);
+
         // filter out private listens
         if ($publicOnly) {
             $recentTracks->public();
             $topArtists->public();
             $topAlbums->public();
+            $topTracks->public();
         }
 
         $props = [
@@ -60,6 +68,7 @@ class UserController extends BaseController
             "recentTracks" => $recentTracks->fetchAllAssociative(),
             "topArtists" => $topArtists->fetchAllAssociative(),
             "topAlbums" => $topAlbums->fetchAllAssociative(),
+            "topTracks" => $topTracks->fetchAllAssociative(),
         ];
         return $this->renderWithInertia("User/Overview", $props);
     }

@@ -20,6 +20,16 @@
             <h3>Top Artists</h3>
             <Charts chartType="artist" />
         </section>
+
+        <section>
+            <h3>Top Albums</h3>
+            <Charts chartType="album" />
+        </section>
+
+        <section>
+            <h3>Top Tracks</h3>
+            <Charts chartType="track" />
+        </section>
     </main>
 </Layout>
 

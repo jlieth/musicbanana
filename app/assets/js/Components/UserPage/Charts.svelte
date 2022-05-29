@@ -1,31 +1,44 @@
 <script lang="ts">
     import { page } from "@inertiajs/inertia-svelte"
-
-    import type { ArtistCharts, AlbumCharts, TrackCharts } from "@/types"
+    import type { Charts } from "@/types"
 
     export let chartType: "artist" | "album" | "track"
 
-    let topArtists: ArtistCharts[] = $page.props.topArtists
-    let topAlbums: AlbumCharts[] = $page.props.topAlbums
-    let topTracks: TrackCharts[] = $page.props.topTracks
+    let items: Charts[] = []
+
+    switch (chartType) {
+        case "artist":
+            items = $page.props.topArtists
+            break
+        case "album":
+            items = $page.props.topAlbums
+            break
+        case "track":
+            items = $page.props.topTracks
+            break
+    }
 </script>
 
 <div class="topList">
 
-    {#if chartType == "artist"}
-    {#each topArtists as artist, idx}
-    {@const maxCount = topArtists[0].count}
+    {#each items as item, idx}
+    {@const maxCount = items[0].count}
     <div class="row">
         <div class="position">{idx + 1}</div>
 
         <div class="content">
             <div class="info">
-                <a class="artist" href="/">{artist.artist_name}</a>
+                {#if chartType == "album"}
+                <a class="title" href="/">{item.album_title}</a>
+                {:else if chartType == "track"}
+                <a class="title" href="/">{item.track_title}</a>
+                {/if}
+                <a class="artist" href="/">{item.artist_name}</a>
             </div>
 
             <a href="/" class="count">
-                <span>{artist.count} listens</span>
-                <div class="bar" style="width: { artist.count/maxCount * 100 }%"></div>
+                <span>{item.count} listens</span>
+                <div class="bar" style="width: { item.count/maxCount * 100 }%"></div>
             </a>
         </div>
 
@@ -33,12 +46,11 @@
     {:else}
     <p>No listens in this time period</p>
     {/each}
-    {/if}
 </div>
 
 <style lang="postcss">
     div.topList {
-        @apply w-full max-w-md shadow-lg;
+        @apply w-full max-w-md shadow-lg text-sm;
     }
 
     div.row {
@@ -60,6 +72,10 @@
 
     div.info > * {
         @apply truncate;
+    }
+
+    a.title {
+        @apply font-bold;
     }
 
     a.count {
