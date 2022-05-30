@@ -5,7 +5,7 @@
 
 <style lang="postcss">
     .logo {
-        @apply flex flex-row text-4xl md:text-2xl;
+        @apply flex flex-row text-3xl md:text-2xl;
         font-family: "HiFont";
     }
 

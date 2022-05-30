@@ -32,7 +32,7 @@
 
 <style lang="postcss">
     header {
-        @apply w-full h-20 shadow-xl;
+        @apply w-full h-16 shadow-xl;
         @apply bg-gradient-to-b from-header-800 via-header-800 to-header-900;
     }
 
