@@ -4,6 +4,7 @@
     import TimeAgo from "javascript-time-ago"
     import en from "javascript-time-ago/locale/en.json"
 
+    import router from "@/router"
     import type { RecentTrack } from "@/types"
 
     TimeAgo.addDefaultLocale(en)
@@ -15,6 +16,7 @@
 
 <div class="recentList">
     {#each items as item}
+    {@const artistUrl = router.artistUrl(item.artist_name)}
     <div class="listen">
         <div class="loved">
             {#if item.loved}
@@ -25,7 +27,7 @@
         </div>
         <div class="info">
             <a class="track" href="/">{item.track_title}</a>
-            <a class="artist" href="/">{item.artist_name}</a>
+            <a class="artist" href={artistUrl}>{item.artist_name}</a>
             <span class="timestamp" title="{item.timestamp}">
                 {timeAgo.format(new Date(item.timestamp))}
             </span>
