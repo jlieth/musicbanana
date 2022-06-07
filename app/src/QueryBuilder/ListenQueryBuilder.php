@@ -155,6 +155,16 @@ class ListenQueryBuilder extends BaseQueryBuilder {
         return $this;
     }
 
+    public function filterByAlbumArtist(Artist $artist): static
+    {
+        $this->joinAlbumTable();
+        $albumAlias = $this->joins[self::TABLE_NAMES["album"]];
+
+        $this->andWhere("$albumAlias.artist_id = :artist");
+        $this->setParameter("artist", $artist->getId());
+        return $this;
+    }
+
     public function filterByTrack(Track $track): static
     {
         $alias = $this->alias;

@@ -407,6 +407,45 @@ class ListenQueryBuilderTest extends BaseDbTest {
     }
 
     /**
+     * Tests App\QueryBuilder\ListenQueryBuilder::filterByAlbumArtist
+     *
+     * $album2 is by $artist1. It has one track, $track2, which is by $artist2.
+     * So this is a case of album and track artist being different. A listen
+     * of $track2 should be returned when filtering by album artist $artist1,
+     * not $artist2 (which is just the track artist).
+     */
+    public function testFilterByAlbumArtist(): void
+    {
+        $album2 = $this->albums[1];
+        $artist2 = $album2->getArtist();
+        $track2 = $album2->getTracks()[0];
+        $artist1 = $track2->getArtist();
+
+        // make sure album and track artist are actually different
+        $this->assertNotSame($artist1, $artist2);
+
+        // profile and date don't matter
+        $profile = $this->profiles[0];
+        $date = new DateTime("now", new DateTimeZone("UTC"));
+
+        // create a listen with this track
+        $listen = $this->createListen($date, $profile, $artist1, $album2, $track2);
+
+        // filtering by correct album artist should return the listen
+        $qb = $this->getQB()->select("l.id")->filterByAlbumArtist($artist2);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertCount(1, $rows);
+        $this->assertEquals($rows[0], $listen->getId());
+
+        // filtering by track artist should return an empty result
+        $qb = $this->getQB()->select("l.id")->filterByAlbumArtist($artist1);
+        $rows = $qb->fetchFirstColumn();
+
+        $this->assertEmpty($rows);
+    }
+
+    /**
      * Tests App\QueryBuilder\ListenQueryBuilder::filterByTrack
      *
      * Create two listens, one with track1 and another with track2.
