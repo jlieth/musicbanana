@@ -1,7 +1,7 @@
 <script lang="ts">
     import Layout from "@/Layout.svelte"
     import Charts from "@/Components/MusicPage/Charts.svelte"
-    import SubHeader from "@/Components/SubHeader/MusicPageSubHeader.svelte"
+    import SubHeader from "@/Components/MusicPage/SubHeader.svelte"
 </script>
 
 <Layout>

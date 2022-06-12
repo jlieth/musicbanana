@@ -1,8 +1,8 @@
 <script lang="ts">
     import Layout from "@/Layout.svelte"
-    import SubHeader from "@/Components/SubHeader/UserPageSubHeader.svelte"
     import Charts from "@/Components/UserPage/Charts.svelte"
     import RecentList from "@/Components/UserPage/RecentList.svelte"
+    import SubHeader from "@/Components/UserPage/SubHeader.svelte"
 </script>
 
 <Layout>

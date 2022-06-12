@@ -1,6 +1,6 @@
 <script lang="ts">
     import Layout from "@/Layout.svelte"
-    import SubHeader from "@/Components/SubHeader/MusicPageSubHeader.svelte"
+    import SubHeader from "@/Components/MusicPage/SubHeader.svelte"
 </script>
 
 <Layout>
