@@ -71,9 +71,9 @@ class ListenQueryBuilderTest extends BaseDbTest {
         $data = explode("\n", file_get_contents($file));
         foreach ($data as $line) {
             $line = explode("\t", $line);
-            if (count($line) !== 4) continue;
+            if (count($line) !== 5) continue;
 
-            list($artist, $track, $album, $ts) = $line;
+            list($artist, $track, $album, $tracknumber, $ts) = $line;
             $date = new DateTime($ts, new DateTimeZone("UTC"));
 
             // assign profiles
@@ -96,7 +96,7 @@ class ListenQueryBuilderTest extends BaseDbTest {
                 "albumArtistName" => $artist,
                 "albumArtistMbid" => null,
                 "trackTitle" => $track,
-                "tracknumber" => 0,
+                "tracknumber" => $tracknumber,
                 "length" => 0,
                 "trackMbid" => null,
             ];

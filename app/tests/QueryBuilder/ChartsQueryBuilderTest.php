@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\QueryBuilder;
 
-use DateInterval;
 use DateTime;
 use DateTimeZone;
 use App\Entity\Listen;
 use App\QueryBuilder\ChartsQueryBuilder;
 use App\Tests\BaseDbTest;
-use PHPUnit\Framework\MockObject\MockObject;
 
 class ChartsQueryBuilderTest extends BaseDbTest {
     public function setUp(): void
@@ -31,9 +29,9 @@ class ChartsQueryBuilderTest extends BaseDbTest {
         $data = explode("\n", file_get_contents($file));
         foreach ($data as $line) {
             $line = explode("\t", $line);
-            if (count($line) !== 4) continue;
+            if (count($line) !== 5) continue;
 
-            list($artist, $track, $album, $ts) = $line;
+            list($artist, $track, $album, $tracknumber, $ts) = $line;
             $date = new DateTime($ts, new DateTimeZone("UTC"));
 
             // switch to secret profile for arbitrary artist
@@ -48,7 +46,7 @@ class ChartsQueryBuilderTest extends BaseDbTest {
                 "albumArtistName" => $artist,
                 "albumArtistMbid" => null,
                 "trackTitle" => $track,
-                "tracknumber" => 0,
+                "tracknumber" => $tracknumber,
                 "length" => 0,
                 "trackMbid" => null,
             ];
