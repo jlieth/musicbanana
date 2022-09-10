@@ -7,7 +7,10 @@ namespace App\Tests\QueryBuilder;
 use DateTime;
 use DateTimeZone;
 use App\Entity\Album;
+use App\Entity\Artist;
 use App\Entity\Listen;
+use App\Entity\Profile;
+use App\Entity\Track;
 use App\QueryBuilder\ChartsQueryBuilder;
 use App\Tests\BaseDbTest;
 
@@ -121,12 +124,30 @@ class ChartsQueryBuilderTest extends BaseDbTest {
     public function testTrackList(): void
     {
         $albumRepo = $this->em->getRepository(Album::class);
-        $album = $albumRepo->findOneBy(["title" => "Cloud nine"]);
-        $result = $this->getQB()->filterByAlbum($album)->trackList()->fetchAllAssociative();
+        $artistRepo = $this->em->getRepository(Artist::class);
+        $profileRepo = $this->em->getRepository(Profile::class);
+        $trackRepo = $this->em->getRepository(Track::class);
 
+        // create a new track on the same album but with different artist
+        $album = $albumRepo->findOneBy(["title" => "Cloud nine"]);
+        $artist = $artistRepo->getOrCreate("Carl Ventura");
+        $track = $trackRepo->getOrCreate("I'm Just a Test to You", $artist, $album, 8, ["length" => 0]);
+        $profile = $profileRepo->findAll()[0];
+
+        $listen = (new Listen())
+            ->setDate(new DateTime("now"))
+            ->setProfile($profile)
+            ->setArtist($artist)
+            ->setAlbum($album)
+            ->setTrack($track);
+        $this->em->persist($listen);
+        $this->em->flush();
+
+        $result = $this->getQB()->filterByAlbum($album)->trackList()->fetchAllAssociative();
         $expected = [
             ["artist_name" => "Gale Ventura", "track_title" => "Sense For A Lost Soul", "tracknumber" => 1, "count" => 11],
             ["artist_name" => "Gale Ventura", "track_title" => "Haze Of My Shadows", "tracknumber" => 2, "count" => 13],
+            ["artist_name" => "Carl Ventura", "track_title" => "I'm Just a Test to You", "tracknumber" => 8, "count" => 1],
         ];
 
         $this->assertEquals($result, $expected);
