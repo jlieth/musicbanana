@@ -6,6 +6,7 @@ namespace App\Tests\QueryBuilder;
 
 use DateTime;
 use DateTimeZone;
+use App\Entity\Album;
 use App\Entity\Listen;
 use App\QueryBuilder\ChartsQueryBuilder;
 use App\Tests\BaseDbTest;
@@ -115,5 +116,19 @@ class ChartsQueryBuilderTest extends BaseDbTest {
         $result = $this->getQB()->tracks()->page(2)->fetchAllAssociative();
         $this->assertCount(1, $result);
         $this->assertEquals($result[0], $expected[10]);
+    }
+
+    public function testTrackList(): void
+    {
+        $albumRepo = $this->em->getRepository(Album::class);
+        $album = $albumRepo->findOneBy(["title" => "Cloud nine"]);
+        $result = $this->getQB()->filterByAlbum($album)->trackList()->fetchAllAssociative();
+
+        $expected = [
+            ["artist_name" => "Gale Ventura", "track_title" => "Sense For A Lost Soul", "tracknumber" => 1, "count" => 11],
+            ["artist_name" => "Gale Ventura", "track_title" => "Haze Of My Shadows", "tracknumber" => 2, "count" => 13],
+        ];
+
+        $this->assertEquals($result, $expected);
     }
 }
