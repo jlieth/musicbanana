@@ -14,7 +14,6 @@ class MusicController extends BaseController
     public function overview(String $artistName): Response
     {
         $artistRepository = $this->em->getRepository(Artist::class);
-        $artistName = rawurldecode($artistName);
         $artist = $artistRepository->findOneBy(["name" => $artistName]);
 
         if ($artist === null) {
@@ -56,13 +55,11 @@ class MusicController extends BaseController
         $artistRepository = $this->em->getRepository(Artist::class);
         $albumRepository = $this->em->getRepository(Album::class);
 
-        $artistName = rawurldecode($artistName);
         $artist = $artistRepository->findOneBy(["name" => $artistName]);
         if ($artist === null) {
             throw $this->createNotFoundException("Artist not found");
         }
 
-        $albumTitle = rawurldecode($albumTitle);
         $album = $albumRepository->findOneBy(["artist" => $artist, "title" => $albumTitle]);
         if ($album === null) {
             throw $this->createNotFoundException("Album not found");
