@@ -2,14 +2,11 @@
     import { EyeOffIconSolid, HeartIconSolid, HeartIconOutline } from "@codewithshin/svelte-heroicons"
     import { inertia, page } from "@inertiajs/inertia-svelte"
     import TimeAgo from "javascript-time-ago"
-    import en from "javascript-time-ago/locale/en.json"
 
     import router from "@/router"
     import type { RecentTrack } from "@/types"
 
-    TimeAgo.addDefaultLocale(en)
     const timeAgo = new TimeAgo("en-US")
-
     let items: RecentTrack[] = $page.props.recentTracks
 </script>
 

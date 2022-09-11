@@ -1,8 +1,11 @@
 <script lang="ts">
     import { createInertiaApp } from "@inertiajs/inertia-svelte"
     import { InertiaProgress } from "@inertiajs/progress"
+    import TimeAgo from "javascript-time-ago"
+    import en from "javascript-time-ago/locale/en.json"
 
     InertiaProgress.init()
+    TimeAgo.addDefaultLocale(en)
 
     createInertiaApp({
         resolve: (name: String) => require(`./Pages/${name}.svelte`),
