@@ -5,6 +5,7 @@
     let component = $page.component
     let artist = $page.props.artist.name
     let album = $page.props.album
+    let trackTitle = $page.props.trackTitle
 </script>
 
 <header>
@@ -14,6 +15,9 @@
         {:else if component == "Music/Album"}
         <h3>{ artist }</h3>
         <h2>{ album.title }</h2>
+        {:else if component == "Music/Track"}
+        <h3>{ artist }</h3>
+        <h2>{ trackTitle }</h2>
         {/if}
     </div>
     <nav>

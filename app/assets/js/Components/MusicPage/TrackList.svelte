@@ -4,6 +4,7 @@
     import router from "@/router"
     import type { TrackList } from "@/types"
 
+    let artist = $page.props.artist
     let tracks: TrackList = $page.props.trackList
     let maxCount: number = $page.props.maxCount
 </script>
@@ -15,7 +16,7 @@
 
         <div class="content">
             <div class="info">
-                <a class="title" href="/">{track.track_title}</a>
+                <a class="title" href={router.trackUrl(artist.name, track.track_title)}>{track.track_title}</a>
             </div>
 
             <a href="/" class="count">

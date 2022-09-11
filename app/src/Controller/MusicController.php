@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\{Album, Artist};
+use App\Entity\{Album, Artist, Track};
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -96,5 +96,48 @@ class MusicController extends BaseController
         ];
 
         return $this->renderWithInertia("Music/Album", $props);
+    }
+
+    #[Route("/music/{artistName}/_/{trackTitle}", name: "music_track", methods: ["GET"], options: ["expose" => true])]
+    public function track(String $artistName, String $trackTitle): Response
+    {
+        $artistRepository = $this->em->getRepository(Artist::class);
+        $trackRepository = $this->em->getRepository(Track::class);
+
+        $artist = $artistRepository->findOneBy(["name" => $artistName]);
+        if ($artist === null) {
+            throw $this->createNotFoundException("Artist not found");
+        }
+
+        $result = $trackRepository->findBy(["artist" => $artist, "title" => $trackTitle]);
+        if (count($result) === 0) {
+            throw $this->createNotFoundException("Track not found");
+        }
+
+        $tracks = [];
+        foreach ($result as $track) {
+            $artist = $track->getArtist();
+            $album = $track->getAlbum();
+
+            $tracks[] = [
+                "artist_name" => $artist->getName(),
+                "track_title" => $track->getTitle(),
+                "album_title" => $album ? $album->getTitle() : null,
+                "length" => $track->getLength(),
+                "tracknumber" => $track->getTracknumber(),
+            ];
+        }
+
+        $props = [
+            "artist" => [
+                "id" => $artist->getId(),
+                "name" => $artist->getName(),
+                "mbid" => $artist->getMbid(),
+            ],
+            "trackTitle" => $trackTitle,
+            "tracks" => $tracks,
+        ];
+
+        return $this->renderWithInertia("Music/Track", $props);
     }
 }

@@ -11,4 +11,8 @@ router.albumUrl = function(artist: string, title: string): string {
     return this.generate("music_album", {artistName: artist, albumTitle: title})
 }
 
+router.trackUrl = function(artist: string, title: string): string {
+    return this.generate("music_track", {artistName: artist, trackTitle: title})
+}
+
 export default router
