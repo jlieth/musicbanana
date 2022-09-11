@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { page } from "@inertiajs/inertia-svelte"
+    import { inertia, page } from "@inertiajs/inertia-svelte"
 
     import router from "@/router"
     import type { TrackList } from "@/types"
@@ -11,12 +11,13 @@
 
 <div class="trackList">
     {#each tracks as track}
+    {@const trackUrl = router.trackUrl(track.artist_name, track.track_title)}
     <div class="row">
         <div class="position">{track.tracknumber}</div>
 
         <div class="content">
             <div class="info">
-                <a class="title" href={router.trackUrl(artist.name, track.track_title)}>{track.track_title}</a>
+                <a class="title" href={trackUrl} use:inertia>{track.track_title}</a>
             </div>
 
             <a href="/" class="count">

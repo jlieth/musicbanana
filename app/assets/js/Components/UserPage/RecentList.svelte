@@ -1,6 +1,6 @@
 <script lang="ts">
     import { EyeOffIconSolid, HeartIconSolid, HeartIconOutline } from "@codewithshin/svelte-heroicons"
-    import { page } from "@inertiajs/inertia-svelte"
+    import { inertia, page } from "@inertiajs/inertia-svelte"
     import TimeAgo from "javascript-time-ago"
     import en from "javascript-time-ago/locale/en.json"
 
@@ -17,6 +17,8 @@
 <div class="recentList">
     {#each items as item}
     {@const artistUrl = router.artistUrl(item.artist_name)}
+    {@const trackUrl = router.trackUrl(item.artist_name, item.track_title)}
+
     <div class="listen">
         <div class="loved">
             {#if item.loved}
@@ -26,8 +28,8 @@
             {/if}
         </div>
         <div class="info">
-            <a class="track" href="/">{item.track_title}</a>
-            <a class="artist" href={artistUrl}>{item.artist_name}</a>
+            <a class="track" href={trackUrl} use:inertia>{item.track_title}</a>
+            <a class="artist" href={artistUrl} use:inertia>{item.artist_name}</a>
             <span class="timestamp" title="{item.timestamp}">
                 {timeAgo.format(new Date(item.timestamp))}
             </span>

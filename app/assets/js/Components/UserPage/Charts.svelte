@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { page } from "@inertiajs/inertia-svelte"
+    import { inertia, page } from "@inertiajs/inertia-svelte"
     import type { Charts } from "@/types"
     import router from "@/router"
 
@@ -26,17 +26,18 @@
     {@const maxCount = items[0].count}
     {@const artistUrl = router.artistUrl(item.artist_name)}
     {@const albumUrl = router.albumUrl(item.artist_name, item.album_title)}
+    {@const trackUrl = router.trackUrl(item.artist_name, item.track_title)}
     <div class="row">
         <div class="position">{idx + 1}</div>
 
         <div class="content">
             <div class="info">
                 {#if chartType == "album"}
-                <a class="title" href={albumUrl}>{item.album_title}</a>
+                <a class="title" href={albumUrl} use:inertia>{item.album_title}</a>
                 {:else if chartType == "track"}
-                <a class="title" href="/">{item.track_title}</a>
+                <a class="title" href={trackUrl} use:inertia>{item.track_title}</a>
                 {/if}
-                <a class="artist" href={artistUrl}>{item.artist_name}</a>
+                <a class="artist" href={artistUrl} use:inertia>{item.artist_name}</a>
             </div>
 
             <a href="/" class="count">
