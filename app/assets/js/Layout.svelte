@@ -3,7 +3,7 @@
     import Flashes from "@/Components/Flashes.svelte"
     import Header from "@/Components/Header/Header.svelte"
 
-    $: console.log($page.props)
+    $: console.log($page)
 </script>
 
 <Header />

@@ -2,11 +2,20 @@
     import { inertia, page } from "@inertiajs/inertia-svelte"
     import router from "@/router"
 
+    let component = $page.component
     let artist = $page.props.artist.name
+    let album = $page.props.album
 </script>
 
 <header>
-    <h2>{ artist }</h2>
+    <div>
+        {#if component == "Music/Overview"}
+        <h2>{ artist }</h2>
+        {:else if component == "Music/Album"}
+        <h3>{ artist }</h3>
+        <h2>{ album.title }</h2>
+        {/if}
+    </div>
     <nav>
         <a href={router.artistUrl(artist)} use:inertia>Overview</a>
         <a href="/">Albums</a>

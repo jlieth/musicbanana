@@ -68,12 +68,34 @@ class MusicController extends BaseController
             throw $this->createNotFoundException("Album not found");
         }
 
+        // get tracklist
+        $trackList = $this
+            ->getChartsQueryBuilder()
+            ->filterByAlbum($album)
+            ->public()
+            ->trackList()
+            ->fetchAllAssociative();
+
+        $maxCount = 0;
+        foreach ($trackList as $track) {
+            $count = $track["count"];
+            $maxCount = max($maxCount, $count);
+        }
+
         $props = [
             "artist" => [
                 "id" => $artist->getId(),
                 "name" => $artist->getName(),
                 "mbid" => $artist->getMbid(),
             ],
+            "album" => [
+                "id" => $album->getId(),
+                "title" => $album->getTitle(),
+                "mbid" => $album->getMbid(),
+                "artistName" => $album->getArtist()->getName(),
+            ],
+            "trackList" => $trackList,
+            "maxCount" => $maxCount,
         ];
 
         return $this->renderWithInertia("Music/Album", $props);
