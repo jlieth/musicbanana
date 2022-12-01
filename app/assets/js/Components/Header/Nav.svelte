@@ -1,6 +1,9 @@
 <script lang="ts">
+    import { UserIconOutline } from "@codewithshin/svelte-heroicons"
     import { inertia, page } from "@inertiajs/inertia-svelte"
+
     import router from "@/router"
+    import Avatar from "@/Components/Header/Avatar.svelte"
     import SearchBar from "@/Components/Header/SearchBar.svelte"
 
     export let open = false
@@ -22,8 +25,11 @@
 
     <a href="{urls["index"]}" use:inertia>Home</a>
     <a href="/" use:inertia>Music</a>
+    <span class="divider"></span>
 
     {#if user}
+        <Avatar class="md:ml-0" />
+        <a href="/" use:inertia>Settings</a>
         <a href="{urls["logout"]}" use:inertia>Log&nbsp;out</a>
     {:else}
         <a href="{urls["login"]}" use:inertia>Log&nbsp;in</a>
@@ -43,13 +49,16 @@
 
     a {
         @apply h-full flex items-center md:w-full p-3 text-gray-200;
-        @apply border-b-4 border-transparent md:border-b-0 md:border-l-4;
         @apply md:border-t md:border-t-header-700;
         @apply transition;
     }
 
     a:hover {
         @apply bg-header-900;
-        @apply border-l-highlight-500;
+    }
+
+    span.divider {
+        @apply h-[75%] flex items-center md:w-full m-3 md:m-0 text-gray-200;
+        @apply border-r border-header-600 md:border-r-0 md:border-t;
     }
 </style>

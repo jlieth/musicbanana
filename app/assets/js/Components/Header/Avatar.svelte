@@ -16,7 +16,7 @@
         {#if user.avatar}
             <img src="{user.avatar}" alt="avatar">
         {:else}
-            <UserIconOutline className="h-8 w-8 rounded-full" />
+            <UserIconOutline className="h-6 w-6 rounded-md" />
         {/if}
     </div>
 
@@ -25,31 +25,29 @@
 
 <style lang="postcss">
     a {
-        @apply relative md:ml-3 text-header-200;
+        @apply h-full flex items-center md:w-full p-3 text-gray-200;
+        @apply transition;
+    }
+
+    a:hover {
+        @apply bg-header-900;
     }
 
     .avatar {
-        @apply w-12 h-12 md:w-10 md:h-10 rounded-full;
+        @apply w-8 h-8 rounded-md;
         @apply flex items-center justify-center;
-        @apply bg-header-700;
-        @apply ring ring-header-500 ring-offset-[-1px] transition;
+        @apply bg-header-700 border border-header-400;
     }
 
     a:hover .avatar {
-        @apply ring-highlight-500;
+        @apply border-highlight-500;
     }
 
     img {
-        @apply rounded-full;
+        @apply rounded-md;
     }
 
     .name {
-        @apply w-12 md:w-10 text-center absolute -bottom-2;
-        @apply text-sm truncate;
-        text-shadow:
-            -1px -1px 0 #000,
-            1px -1px 0 #000,
-            -1px 1px 0 #000,
-            1px 1px 0 #000;
+        @apply ml-[5px];
     }
 </style>
