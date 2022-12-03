@@ -31,9 +31,9 @@
                 <a href="/">Tags?</a>
             </nav>
         </header>
-    </div>
 
-    <slot name="main" />
+        <slot name="main" />
+    </div>
 </Layout>
 
 <style lang="postcss">
