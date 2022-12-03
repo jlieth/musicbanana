@@ -16,7 +16,7 @@
     }
 
     #wrapper {
-        @apply w-1/2 md:w-full max-w-xxl mx-auto my-2 md:my-0;
+        @apply w-[1320px] xl:w-[95%] md:w-full max-w-xxl mx-auto my-2 md:my-0;
         @apply border border-gray-500 border-opacity-50 md:border-0;
         @apply bg-gray-100;
     }
