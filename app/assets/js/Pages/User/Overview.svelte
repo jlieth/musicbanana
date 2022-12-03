@@ -2,7 +2,6 @@
     import Layout from "@/Pages/User/_Layout.svelte"
     import Charts from "@/Components/UserPage/Charts.svelte"
     import RecentList from "@/Components/UserPage/RecentList.svelte"
-    import SubHeader from "@/Components/UserPage/SubHeader.svelte"
 </script>
 
 <Layout>
