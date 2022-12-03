@@ -3,7 +3,7 @@
 <script lang="ts">
     import { inertia, useForm } from "@inertiajs/inertia-svelte"
     import router from "@/router"
-    import Layout from "@/Layout.svelte"
+    import Layout from "@/Pages/_Layout.svelte"
 
     let urls = {
         login: router.generate("login_attempt", true),
@@ -21,7 +21,7 @@
 </script>
 
 <Layout>
-    <main slot="main">
+    <main slot="content">
         <h2>Login</h2>
         <form on:submit|preventDefault={submit}>
             <div>
