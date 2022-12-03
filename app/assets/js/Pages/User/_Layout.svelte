@@ -1,6 +1,7 @@
 <script lang="ts">
     import { inertia, page } from "@inertiajs/inertia-svelte"
     import router from "@/router"
+    import Layout from "@/Pages/_Layout.svelte"
 
     let profileUser = $page.props.profileUser
     let nameEncoded = encodeURIComponent(profileUser)
@@ -10,16 +11,23 @@
     }
 </script>
 
-<header>
-    <h2>{ profileUser }</h2>
-    <nav>
-        <a href={urls.overview} use:inertia>Overview</a>
-        <a href="/">Library</a>
-        <a href="/">Reports</a>
-        <a href="/">Favorites</a>
-        <a href="/">Friends</a>
-    </nav>
-</header>
+<Layout>
+    <div slot="content">
+        <header>
+            <h2>{ profileUser }</h2>
+            <nav>
+                <a href={urls.overview} use:inertia>Overview</a>
+                <a href="/">Library</a>
+                <a href="/">Reports</a>
+                <a href="/">Favorites</a>
+                <a href="/">Friends</a>
+            </nav>
+        </header>
+
+        <slot name="main" />
+    </div>
+
+</Layout>
 
 <style lang="postcss">
     header {

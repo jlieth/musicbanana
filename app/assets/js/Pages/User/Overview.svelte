@@ -1,15 +1,11 @@
 <script lang="ts">
-    import Layout from "@/Layout.svelte"
+    import Layout from "@/Pages/User/_Layout.svelte"
     import Charts from "@/Components/UserPage/Charts.svelte"
     import RecentList from "@/Components/UserPage/RecentList.svelte"
     import SubHeader from "@/Components/UserPage/SubHeader.svelte"
 </script>
 
 <Layout>
-    <div slot="subheader">
-        <SubHeader />
-    </div>
-
     <main slot="main">
         <section>
             <h3>Recent tracks</h3>
@@ -35,7 +31,7 @@
 
 <style>
     main {
-        @apply w-[1320px] flex flex-col items-stretch gap-3;
+        @apply flex flex-col items-stretch gap-3;
     }
 
     section {
