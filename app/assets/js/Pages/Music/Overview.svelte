@@ -1,14 +1,9 @@
 <script lang="ts">
-    import Layout from "@/Layout.svelte"
+    import Layout from "@/Pages/Music/_Layout.svelte"
     import Charts from "@/Components/MusicPage/Charts.svelte"
-    import SubHeader from "@/Components/MusicPage/SubHeader.svelte"
 </script>
 
 <Layout>
-    <div slot="subheader">
-        <SubHeader />
-    </div>
-
     <main slot="main">
         <section>
             <h3>Top Albums</h3>
@@ -24,7 +19,7 @@
 
 <style>
     main {
-        @apply w-[1320px] flex flex-col items-stretch gap-3;
+        @apply flex flex-col items-stretch gap-3;
     }
 
     section {

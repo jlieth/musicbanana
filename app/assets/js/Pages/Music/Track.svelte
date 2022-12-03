@@ -2,17 +2,12 @@
     import { inertia, page } from "@inertiajs/inertia-svelte"
 
     import router from "@/router"
-    import Layout from "@/Layout.svelte"
-    import SubHeader from "@/Components/MusicPage/SubHeader.svelte"
+    import Layout from "@/Pages/_Layout.svelte"
 
     let tracks = $page.props.tracks
 </script>
 
 <Layout>
-    <div slot="subheader">
-        <SubHeader />
-    </div>
-
     <main slot="main">
         <section>
             <h3>Featured on</h3>
@@ -26,7 +21,7 @@
 
 <style>
     main {
-        @apply w-[1320px] flex flex-col items-stretch gap-3;
+        @apply flex flex-col items-stretch gap-3;
     }
 
     section {
