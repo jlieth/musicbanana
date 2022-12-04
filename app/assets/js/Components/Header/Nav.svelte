@@ -10,30 +10,22 @@
     $: hide = !open
 
     $: user = $page.props.user
-
-    let urls = {
-        "index": router.generate("index", true),
-        "login": router.generate("login", true),
-        "logout": router.generate("logout", true),
-        "register": router.generate("register", true),
-    }
-
 </script>
 
 <nav class:hide>
     <SearchBar class="mr-4 md:mr-0 md:mt-2" />
 
-    <a href="{urls["index"]}" use:inertia>Home</a>
+    <a href={router.indexUrl} use:inertia>Home</a>
     <a href="/" use:inertia>Music</a>
     <span class="divider"></span>
 
     {#if user}
         <Avatar class="md:ml-0" />
         <a href="/" use:inertia>Settings</a>
-        <a href="{urls["logout"]}" use:inertia>Log&nbsp;out</a>
+        <a href={router.logoutUrl} use:inertia>Log&nbsp;out</a>
     {:else}
-        <a href="{urls["login"]}" use:inertia>Log&nbsp;in</a>
-        <a href="{urls["register"]}" use:inertia>Sign&nbsp;up</a>
+        <a href={router.loginUrl} use:inertia>Log&nbsp;in</a>
+        <a href={router.registerUrl} use:inertia>Sign&nbsp;up</a>
     {/if}
 </nav>
 

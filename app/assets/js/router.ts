@@ -3,6 +3,11 @@ import router from "@public/bundles/fosjsrouting/js/router.min.js"
 
 router.setRoutingData(routes)
 
+router.indexUrl = router.generate("index")
+router.loginUrl = router.generate("login")
+router.logoutUrl = router.generate("logout")
+router.registerUrl = router.generate("register")
+
 router.artistUrl = function(name: string): string {
     return this.generate("music_overview", {artistName: name})
 }
