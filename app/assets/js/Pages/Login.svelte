@@ -5,18 +5,13 @@
     import router from "@/router"
     import Layout from "@/Pages/_Layout.svelte"
 
-    let urls = {
-        login: router.generate("login_attempt", true),
-        register: router.generate("register", true),
-    }
-
     let form = useForm({
         name: null,
         password: null,
     })
 
     function submit() {
-        $form.post(urls["login"])
+        $form.post(router.loginUrl)
     }
 </script>
 
@@ -43,7 +38,7 @@
 
             <div class="mt-6 text-center">
                 Don't have an account yet?
-                <a href="{urls["register"]}" class="underline" use:inertia>Register here</a>
+                <a href={router.registerUrl} class="underline" use:inertia>Register here</a>
             </div>
         </form>
     </main>
