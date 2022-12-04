@@ -15,4 +15,8 @@ router.trackUrl = function(artist: string, title: string): string {
     return this.generate("music_track", {artistName: artist, trackTitle: title})
 }
 
+router.userOverviewUrl = function(name: string): string {
+    return this.generate("user_overview", {name: name})
+}
+
 export default router

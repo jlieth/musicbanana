@@ -4,11 +4,6 @@
     import Layout from "@/Pages/_Layout.svelte"
 
     let profileUser = $page.props.profileUser
-    let nameEncoded = encodeURIComponent(profileUser)
-
-    let urls = {
-        "overview": router.generate("user_overview", {name: nameEncoded}),
-    }
 </script>
 
 <Layout>
@@ -16,7 +11,7 @@
         <header>
             <h2>{ profileUser }</h2>
             <nav>
-                <a href={urls.overview} use:inertia>Overview</a>
+                <a href={router.userOverviewUrl(profileUser)} use:inertia>Overview</a>
                 <a href="/">Library</a>
                 <a href="/">Reports</a>
                 <a href="/">Favorites</a>
